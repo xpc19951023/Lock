@@ -15,7 +15,10 @@ uchar code table41[]="    …Ë÷√ΩÁ√Ê  ";
 uchar code table00[]="                ";
 
 uchar flag_function=0;
-
+uchar flag_mimakaisuo=0;
+uchar flag_zhiwenkaisuo=0;
+uchar flag_lanyakaisuo=0;
+uchar flag_shezhijiemian=0;
 void init();
 
 void main()
@@ -39,7 +42,8 @@ void main()
 	while(1)
 	{
 		 KeyDown();
-		 
+		 if(flag_mimakaisuo==0&&flag_zhiwenkaisuo==0&&flag_lanyakaisuo==0&&flag_shezhijiemian==0)
+		 {
 		 if(KeyValue==0)
 		 {
 		 	flag_function=1;
@@ -90,6 +94,7 @@ void main()
 		 {
 		   
 		    //lcd12864_init();
+				flag_mimakaisuo=1;
    	        lcd12864_show_string(0,0,table11);
 	        lcd12864_show_string(1,0,table00);
 	        lcd12864_show_string(2,0,table00);
@@ -101,6 +106,7 @@ void main()
 		 {
 		   
 		    //lcd12864_init();
+			flag_zhiwenkaisuo=1;
    	        lcd12864_show_string(0,0,table21);
 	        lcd12864_show_string(1,0,table00);
 	        lcd12864_show_string(2,0,table00);
@@ -112,6 +118,7 @@ void main()
 		 {
 		   
 		    //lcd12864_init();
+			flag_lanyakaisuo=1;
    	        lcd12864_show_string(0,0,table31);
 	        lcd12864_show_string(1,0,table00);
 	        lcd12864_show_string(2,0,table00);
@@ -123,13 +130,14 @@ void main()
 		 {
 		   
 		    //lcd12864_init();
+			flag_shezhijiemian=1;
    	        lcd12864_show_string(0,0,table41);
 	        lcd12864_show_string(1,0,table00);
 	        lcd12864_show_string(2,0,table00);
             lcd12864_show_string(3,0,table00);
      
 		}	
-
+			}
 
 		
 	//	 if()
