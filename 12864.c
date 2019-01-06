@@ -1,9 +1,8 @@
-#include<reg51.h>
+#include<reg52.h>
 #include<intrins.h>
 #include<stdlib.h>
+#include"12864.h"
 
-#define uchar unsigned char
-#define uint unsigned int
 
 sbit rs = P2^6;
 sbit rw = P2^5;
@@ -12,34 +11,27 @@ sbit PSB = P3^2; //可以直接高电平
 //P0数据显示
 
 
-uchar code table1[]="江苏理工学院";
-uchar code table2[]="电气信息工程学院";
+
 
 void write_12864com(uchar com);
 void write_12864dat(uchar dat);
 void delay_ms(uint z);
 void led_pos(uchar x,uchar y);
-void init();
+void lcd12864_init();
+void lcd12864_show_string(uchar x,uchar y,uchar str[]);
+void lcd12864_show_char(uchar x,uchar y,uchar ch);
 
-void main()
+
+void lcd12864_show_string(uchar x,uchar y,uchar str[])
 {
-uchar i;
-init();
-led_pos(1,0);
-i=0;
-while(table1[i]!='\0')
-{
-  write_12864dat(table1[i]);	  
-  i++;
-}
-led_pos(2,0);
-i=0;
-while(table2[i]!='\0')
-{
-  write_12864dat(table2[i]);	  
-  i++;
-}
-while(1);
+	   uchar i;
+		led_pos(x,y);
+		i=0;
+		while(str[i]!='\0')
+		{
+		  write_12864dat(str[i]);	  
+		  i++;
+		}
 }
 
 void write_12864com(uchar com)
@@ -89,7 +81,7 @@ void led_pos(uchar x,uchar y)
  
 }
 
-void init()
+void lcd12864_init()
 {
   PSB=1;
   write_12864com(0x30);
