@@ -7,12 +7,16 @@ uchar code table2[]="2.指纹开锁";
 uchar code table3[]="3.蓝牙开锁";
 uchar code table4[]="4.设置";
 uchar code table5[]="5.确定";
+uchar code table6[]="10.delete";
+uchar code table7[]="11确认";
+uchar code table8[]="12退出";
 
 uchar code table11[]="请输入用户密码";
 uchar code table21[]="请输入用户指纹";
 uchar code table31[]="请连接蓝牙设备";
 uchar code table41[]="    设置界面  ";
-uchar code table00[]="                ";
+uchar code table00[]="                  ";
+
 
 uchar mima[6]={0};		  //密码
 uchar mima_edit[6]={0};	  //用户输入的密码
@@ -150,8 +154,9 @@ void main()
 	   {
 	     lcd12864_show_string(0,0,table11);
 	     lcd12864_show_string(1,0,table00);
-	     lcd12864_show_string(2,0,table00);
-         lcd12864_show_string(3,0,table00);
+	     lcd12864_show_string(2,1,table6);
+         lcd12864_show_string(3,1,table7);
+		 lcd12864_show_string(3,5,table8);
 	   }
 
 	   	//二级菜单 ————指纹开锁界面
@@ -161,13 +166,13 @@ void main()
 	   }
 
 	   	//二级菜单 ————蓝牙开锁界面
-	   if(flag_lanyakaisuo=1)
+	   if(flag_lanyakaisuo==1)
 	   {
 	   
 	   }
 
 	   	//二级菜单 ————蓝牙开锁界面
-	   if(flag_shezhijiemian=1)
+	   if(flag_shezhijiemian==1)
 	   {
 	   
 	   }

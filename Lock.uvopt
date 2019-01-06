@@ -193,10 +193,10 @@
       <FileType>1</FileType>
       <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>25</ColumnNumber>
+      <ColumnNumber>62</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>52</TopLine>
-      <CurrentLine>52</CurrentLine>
+      <TopLine>151</TopLine>
+      <CurrentLine>157</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -214,10 +214,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>15</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>31</TopLine>
+      <CurrentLine>31</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\12864.c</PathWithFileName>
       <FilenameWithoutPath>12864.c</FilenameWithoutPath>
@@ -228,10 +228,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>8</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>7</TopLine>
+      <CurrentLine>19</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\key.c</PathWithFileName>
       <FilenameWithoutPath>key.c</FilenameWithoutPath>
@@ -239,7 +239,7 @@
   </Group>
 
   <AlienFiles>
-    <PathWithFilename>F:\Lock\KEY.H</PathWithFilename>
+    <PathWithFilename>I:\Users\zyc\Desktop\lock\Lock\KEY.H</PathWithFilename>
     <TopLine>1</TopLine>
     <CurrentLine>13</CurrentLine>
     <Constant>0</Constant>
@@ -265,7 +265,7 @@
   </AlienFiles>
 
   <AlienFiles>
-    <PathWithFilename>F:\Lock\12864.H</PathWithFilename>
+    <PathWithFilename>I:\Users\zyc\Desktop\lock\Lock\12864.H</PathWithFilename>
     <TopLine>1</TopLine>
     <CurrentLine>1</CurrentLine>
     <Constant>0</Constant>
@@ -1635,9 +1635,9 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>24</ColumnNumber>
-          <TopLine>112</TopLine>
-          <CurrentLine>133</CurrentLine>
+          <ColumnNumber>62</ColumnNumber>
+          <TopLine>151</TopLine>
+          <CurrentLine>157</CurrentLine>
         </Doc>
         <Doc>
           <Name>12864.H</Name>
