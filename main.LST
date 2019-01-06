@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  01/06/2019 17:46:51 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/06/2019 19:00:19 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -17,130 +17,173 @@ line level    source
    8          uchar code table4[]="4.设置";
    9          uchar code table5[]="5.确定";
   10          
-  11          void init();
-  12          
-  13          void main()
-  14          {
-  15   1         init();//初始化，读取密码
-  16   1      //   display_init_lcd();//显示初始界面
-  17   1      //   /*
-  18   1      //     1 密码解锁
-  19   1      //       2 蓝牙解锁
-  20   1      //       3 指纹解锁
-  21   1      //       4 设置
-  22   1      //   */
-  23   1      //   key_num=get_keynum();
-  24   1      //      lcd12864_show_string(0,1,table1);
-  25   1      //      lcd12864_show_string(1,1,table2);
-  26   1      //      lcd12864_show_string(2,1,table3);
-  27   1      //      lcd12864_show_string(3,1,table4);
-  28   1      //      lcd12864_show_string(3,5,table5);
-  29   1      
-  30   1              
-  31   1              while(1)
-  32   1              {
-  33   2                       KeyDown();
-  34   2                       
-  35   2                       if(KeyValue==0)
-  36   2                       {
-  37   3                       
-  38   3                              lcd12864_show_char(0,0,'*');
-  39   3                              lcd12864_show_char(1,0,' ');
-  40   3                              lcd12864_show_char(2,0,' ');
-  41   3                              lcd12864_show_char(3,0,' ');
-  42   3                              lcd12864_show_char(3,4,' ');
-  43   3                                                      
-  44   3                       }      
-  45   2      
-  46   2                        if(KeyValue==1)
-  47   2                       {
-  48   3                              
-  49   3                              lcd12864_show_char(0,0,' ');
-  50   3                              lcd12864_show_char(1,0,'*') ;
-  51   3                              lcd12864_show_char(2,0,' ');
-  52   3                              lcd12864_show_char(3,0,' ');
-  53   3                              lcd12864_show_char(3,4,' ');
-  54   3                                                      
-  55   3                      
-C51 COMPILER V9.01   MAIN                                                                  01/06/2019 17:46:51 PAGE 2   
+  11          uchar code table11[]="请输入用户密码";
+  12          uchar code table21[]="请输入用户指纹";
+  13          uchar code table31[]="请连接蓝牙设备";
+  14          uchar code table41[]="    设置界面  ";
+  15          uchar code table00[]="                ";
+  16          
+  17          uchar flag_function=0;
+  18          
+  19          void init();
+  20          
+  21          void main()
+  22          {
+  23   1         init();//初始化，读取密码
+  24   1      //   display_init_lcd();//显示初始界面
+  25   1      //   /*
+  26   1      //     1 密码解锁
+  27   1      //       2 蓝牙解锁
+  28   1      //       3 指纹解锁
+  29   1      //       4 设置
+  30   1      //   */
+  31   1      //   key_num=get_keynum();
+  32   1      //      lcd12864_show_string(0,1,table1);
+  33   1      //      lcd12864_show_string(1,1,table2);
+  34   1      //      lcd12864_show_string(2,1,table3);
+  35   1      //      lcd12864_show_string(3,1,table4);
+  36   1      //      lcd12864_show_string(3,5,table5);
+  37   1      //
+  38   1              
+  39   1              while(1)
+  40   1              {
+  41   2                       KeyDown();
+  42   2                       
+  43   2                       if(KeyValue==0)
+  44   2                       {
+  45   3                              flag_function=1;
+  46   3                              lcd12864_show_char(0,0,'*');
+  47   3                              lcd12864_show_char(1,0,' ');
+  48   3                              lcd12864_show_char(2,0,' ');
+  49   3                              lcd12864_show_char(3,0,' ');
+  50   3                              lcd12864_show_char(3,4,' ');
+  51   3                                                      
+  52   3                       }      
+  53   2      
+  54   2                        if(KeyValue==1)
+  55   2                       {
+C51 COMPILER V9.01   MAIN                                                                  01/06/2019 19:00:19 PAGE 2   
 
-  56   3                       }      
-  57   2      
-  58   2                        if(KeyValue==2)
-  59   2                       {
-  60   3                              lcd12864_show_char(0,0,' ');
-  61   3                              lcd12864_show_char(1,0,' ') ;
-  62   3                              lcd12864_show_char(2,0,'*');
-  63   3                              lcd12864_show_char(3,0,' ');
-  64   3                              lcd12864_show_char(3,4,' ');
-  65   3              
-  66   3                       }      
-  67   2      
-  68   2                        if(KeyValue==3)
-  69   2                       {
-  70   3                         
-  71   3                              lcd12864_show_char(0,0,' ');
-  72   3                              lcd12864_show_char(1,0,' ') ;
-  73   3                              lcd12864_show_char(2,0,' ');
-  74   3                              lcd12864_show_char(3,0,'*');
-  75   3                              lcd12864_show_char(3,4,' ');
-  76   3      
-  77   3      
-  78   3                       }      
-  79   2      
-  80   2                        if(KeyValue==4)
-  81   2                       {
-  82   3                         
-  83   3                              lcd12864_show_char(0,0,' ');
-  84   3                              lcd12864_show_char(1,0,' ') ;
-  85   3                              lcd12864_show_char(2,0,' ');
-  86   3                              lcd12864_show_char(3,0,' ');
-  87   3                              lcd12864_show_char(3,4,'*');
-  88   3      
-  89   3                      
-  90   3      
-  91   3                       }      
-  92   2              //       if()
-  93   2      
-  94   2      
-  95   2      //              if(key_num==1)
-  96   2      //              {  
-  97   2      //                      mimajiesuo();//密码解锁,可取消
-  98   2      //              }
-  99   2      //              if(key_num==2)
- 100   2      //              {
- 101   2      //                      lanyajiesuo();//蓝牙解锁，可取消
- 102   2      //              }
- 103   2      //              if(key_num==3)
- 104   2      //              {  
- 105   2      //                      zhiwenjiesuo();//指纹解锁，可取消
- 106   2      //              }
- 107   2      //              if(key_num==4)
- 108   2      //              {   
- 109   2      //                      shezhi();          // 设置，可取消
- 110   2      //              }
- 111   2              }
- 112   1      }
- 113          
- 114          void init()
- 115          {
- 116   1         lcd12864_init();
- 117   1              lcd12864_show_string(0,1,table1);
-C51 COMPILER V9.01   MAIN                                                                  01/06/2019 17:46:51 PAGE 3   
+  56   3                              flag_function=2;
+  57   3                              lcd12864_show_char(0,0,' ');
+  58   3                              lcd12864_show_char(1,0,'*') ;
+  59   3                              lcd12864_show_char(2,0,' ');
+  60   3                              lcd12864_show_char(3,0,' ');
+  61   3                              lcd12864_show_char(3,4,' ');
+  62   3                                                      
+  63   3                      
+  64   3                       }      
+  65   2      
+  66   2                        if(KeyValue==2)
+  67   2                       {
+  68   3                              flag_function=3;
+  69   3                              lcd12864_show_char(0,0,' ');
+  70   3                              lcd12864_show_char(1,0,' ') ;
+  71   3                              lcd12864_show_char(2,0,'*');
+  72   3                              lcd12864_show_char(3,0,' ');
+  73   3                              lcd12864_show_char(3,4,' ');
+  74   3              
+  75   3                       }      
+  76   2      
+  77   2                        if(KeyValue==3)
+  78   2                       {
+  79   3                              flag_function=4;
+  80   3                              lcd12864_show_char(0,0,' ');
+  81   3                              lcd12864_show_char(1,0,' ');
+  82   3                              lcd12864_show_char(2,0,' ');
+  83   3                              lcd12864_show_char(3,0,'*');
+  84   3                              lcd12864_show_char(3,4,' ');
+  85   3      
+  86   3                       }
+  87   2                              
+  88   2      
+  89   2                        if( KeyValue==4 && flag_function==1 )
+  90   2                       {
+  91   3                         
+  92   3                          //lcd12864_init();
+  93   3                      lcd12864_show_string(0,0,table11);
+  94   3                      lcd12864_show_string(1,0,table00);
+  95   3                      lcd12864_show_string(2,0,table00);
+  96   3                  lcd12864_show_string(3,0,table00);
+  97   3           
+  98   3                      }       
+  99   2      
+ 100   2                        if( KeyValue==4 && flag_function==2 )
+ 101   2                       {
+ 102   3                         
+ 103   3                          //lcd12864_init();
+ 104   3                      lcd12864_show_string(0,0,table21);
+ 105   3                      lcd12864_show_string(1,0,table00);
+ 106   3                      lcd12864_show_string(2,0,table00);
+ 107   3                  lcd12864_show_string(3,0,table00);
+ 108   3           
+ 109   3                      }       
+ 110   2      
+ 111   2                        if( KeyValue==4 && flag_function==3 )
+ 112   2                       {
+ 113   3                         
+ 114   3                          //lcd12864_init();
+ 115   3                      lcd12864_show_string(0,0,table31);
+ 116   3                      lcd12864_show_string(1,0,table00);
+ 117   3                      lcd12864_show_string(2,0,table00);
+C51 COMPILER V9.01   MAIN                                                                  01/06/2019 19:00:19 PAGE 3   
 
- 118   1              lcd12864_show_string(1,1,table2);
- 119   1              lcd12864_show_string(2,1,table3);
- 120   1              lcd12864_show_string(3,1,table4);
- 121   1              lcd12864_show_string(3,5,table5);
- 122   1      }
+ 118   3                  lcd12864_show_string(3,0,table00);
+ 119   3           
+ 120   3                      }       
+ 121   2      
+ 122   2                        if( KeyValue==4 && flag_function==4 )
+ 123   2                       {
+ 124   3                         
+ 125   3                          //lcd12864_init();
+ 126   3                      lcd12864_show_string(0,0,table41);
+ 127   3                      lcd12864_show_string(1,0,table00);
+ 128   3                      lcd12864_show_string(2,0,table00);
+ 129   3                  lcd12864_show_string(3,0,table00);
+ 130   3           
+ 131   3                      }       
+ 132   2      
+ 133   2      
+ 134   2                      
+ 135   2              //       if()
+ 136   2      
+ 137   2      
+ 138   2      //              if(key_num==1)
+ 139   2      //              {  
+ 140   2      //                      mimajiesuo();//密码解锁,可取消
+ 141   2      //              }
+ 142   2      //              if(key_num==2)
+ 143   2      //              {
+ 144   2      //                      lanyajiesuo();//蓝牙解锁，可取消
+ 145   2      //              }
+ 146   2      //              if(key_num==3)
+ 147   2      //              {  
+ 148   2      //                      zhiwenjiesuo();//指纹解锁，可取消
+ 149   2      //              }
+ 150   2      //              if(key_num==4)
+ 151   2      //              {   
+ 152   2      //                      shezhi();          // 设置，可取消
+ 153   2      //              }
+ 154   2              }
+ 155   1      }
+ 156          
+ 157          void init()
+ 158          {
+ 159   1          lcd12864_init();
+ 160   1              lcd12864_show_string(0,1,table1);
+ 161   1              lcd12864_show_string(1,1,table2);
+ 162   1              lcd12864_show_string(2,1,table3);
+ 163   1              lcd12864_show_string(3,1,table4);
+ 164   1              lcd12864_show_string(3,5,table5);
+ 165   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    323    ----
-   CONSTANT SIZE    =     47    ----
+   CODE SIZE        =    537    ----
+   CONSTANT SIZE    =    124    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =      1    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

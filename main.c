@@ -8,6 +8,14 @@ uchar code table3[]="3.蓝牙开锁";
 uchar code table4[]="4.设置";
 uchar code table5[]="5.确定";
 
+uchar code table11[]="请输入用户密码";
+uchar code table21[]="请输入用户指纹";
+uchar code table31[]="请连接蓝牙设备";
+uchar code table41[]="    设置界面  ";
+uchar code table00[]="                ";
+
+uchar flag_function=0;
+
 void init();
 
 void main()
@@ -26,7 +34,7 @@ void main()
 //	lcd12864_show_string(2,1,table3);
 //	lcd12864_show_string(3,1,table4);
 //	lcd12864_show_string(3,5,table5);
-
+//
 	
 	while(1)
 	{
@@ -34,7 +42,7 @@ void main()
 		 
 		 if(KeyValue==0)
 		 {
-		 
+		 	flag_function=1;
 			lcd12864_show_char(0,0,'*');
 			lcd12864_show_char(1,0,' ');
 		   	lcd12864_show_char(2,0,' ');
@@ -45,7 +53,7 @@ void main()
 
 		  if(KeyValue==1)
 		 {
-		 	
+		 	flag_function=2;
 			lcd12864_show_char(0,0,' ');
 			lcd12864_show_char(1,0,'*') ;
 		   	lcd12864_show_char(2,0,' ');
@@ -57,6 +65,7 @@ void main()
 
 		  if(KeyValue==2)
 		 {
+			flag_function=3;
 			lcd12864_show_char(0,0,' ');
 			lcd12864_show_char(1,0,' ') ;
 		   	lcd12864_show_char(2,0,'*');
@@ -67,28 +76,62 @@ void main()
 
 		  if(KeyValue==3)
 		 {
-		   
+		   	flag_function=4;
 			lcd12864_show_char(0,0,' ');
-			lcd12864_show_char(1,0,' ') ;
+			lcd12864_show_char(1,0,' ');
 		   	lcd12864_show_char(2,0,' ');
 			lcd12864_show_char(3,0,'*');
 			lcd12864_show_char(3,4,' ');
 
+		 }
+		 	
 
-		 }	
-
-		  if(KeyValue==4)
+		  if( KeyValue==4 && flag_function==1 )
 		 {
 		   
-			lcd12864_show_char(0,0,' ');
-			lcd12864_show_char(1,0,' ') ;
-		   	lcd12864_show_char(2,0,' ');
-			lcd12864_show_char(3,0,' ');
-			lcd12864_show_char(3,4,'*');
+		    //lcd12864_init();
+   	        lcd12864_show_string(0,0,table11);
+	        lcd12864_show_string(1,0,table00);
+	        lcd12864_show_string(2,0,table00);
+            lcd12864_show_string(3,0,table00);
+     
+		}	
+
+		  if( KeyValue==4 && flag_function==2 )
+		 {
+		   
+		    //lcd12864_init();
+   	        lcd12864_show_string(0,0,table21);
+	        lcd12864_show_string(1,0,table00);
+	        lcd12864_show_string(2,0,table00);
+            lcd12864_show_string(3,0,table00);
+     
+		}	
+
+		  if( KeyValue==4 && flag_function==3 )
+		 {
+		   
+		    //lcd12864_init();
+   	        lcd12864_show_string(0,0,table31);
+	        lcd12864_show_string(1,0,table00);
+	        lcd12864_show_string(2,0,table00);
+            lcd12864_show_string(3,0,table00);
+     
+		}	
+
+		  if( KeyValue==4 && flag_function==4 )
+		 {
+		   
+		    //lcd12864_init();
+   	        lcd12864_show_string(0,0,table41);
+	        lcd12864_show_string(1,0,table00);
+	        lcd12864_show_string(2,0,table00);
+            lcd12864_show_string(3,0,table00);
+     
+		}	
+
 
 		
-
-		 }	
 	//	 if()
 
 
@@ -113,7 +156,7 @@ void main()
 
 void init()
 {
-   lcd12864_init();
+    lcd12864_init();
    	lcd12864_show_string(0,1,table1);
 	lcd12864_show_string(1,1,table2);
 	lcd12864_show_string(2,1,table3);
