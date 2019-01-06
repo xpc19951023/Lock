@@ -14,6 +14,9 @@ uchar code table31[]="请连接蓝牙设备";
 uchar code table41[]="    设置界面  ";
 uchar code table00[]="                ";
 
+uchar mima[6]={0};		  //密码
+uchar mima_edit[6]={0};	  //用户输入的密码
+
 uchar flag_function=0;
 uchar flag_mimakaisuo=0;
 uchar flag_zhiwenkaisuo=0;
@@ -170,4 +173,10 @@ void init()
 	lcd12864_show_string(2,1,table3);
 	lcd12864_show_string(3,1,table4);
 	lcd12864_show_string(3,5,table5);
+	mima[0]=1;
+	mima[1]=2;
+	mima[2]=3;
+	mima[3]=4;
+	mima[4]=5;
+	mima[5]=6;
 }
