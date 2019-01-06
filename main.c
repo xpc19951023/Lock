@@ -45,6 +45,8 @@ void main()
 	while(1)
 	{
 		 KeyDown();
+
+		 //一级菜单
 		 if(flag_mimakaisuo==0&&flag_zhiwenkaisuo==0&&flag_lanyakaisuo==0&&flag_shezhijiemian==0)
 		 {
 		 if(KeyValue==0)
@@ -97,7 +99,7 @@ void main()
 		 {
 		   
 		    //lcd12864_init();
-				flag_mimakaisuo=1;
+			flag_mimakaisuo=1;
    	        lcd12864_show_string(0,0,table11);
 	        lcd12864_show_string(1,0,table00);
 	        lcd12864_show_string(2,0,table00);
@@ -110,10 +112,10 @@ void main()
 		   
 		    //lcd12864_init();
 			flag_zhiwenkaisuo=1;
-   	        lcd12864_show_string(0,0,table21);
-	        lcd12864_show_string(1,0,table00);
-	        lcd12864_show_string(2,0,table00);
-            lcd12864_show_string(3,0,table00);
+   	     //   lcd12864_show_string(0,0,table21);
+	      //  lcd12864_show_string(1,0,table00);
+	      //  lcd12864_show_string(2,0,table00);
+          //  lcd12864_show_string(3,0,table00);
      
 		}	
 
@@ -139,8 +141,37 @@ void main()
 	        lcd12864_show_string(2,0,table00);
             lcd12864_show_string(3,0,table00);
      
-		}	
-			}
+		}
+		
+	}
+
+	  //二级菜单 ————密码开锁界面
+	   if(flag_mimakaisuo==1)
+	   {
+	     lcd12864_show_string(0,0,table11);
+	     lcd12864_show_string(1,0,table00);
+	     lcd12864_show_string(2,0,table00);
+         lcd12864_show_string(3,0,table00);
+	   }
+
+	   	//二级菜单 ————指纹开锁界面
+	   if(flag_zhiwenkaisuo==1)
+	   {
+	   
+	   }
+
+	   	//二级菜单 ————蓝牙开锁界面
+	   if(flag_lanyakaisuo=1)
+	   {
+	   
+	   }
+
+	   	//二级菜单 ————蓝牙开锁界面
+	   if(flag_shezhijiemian=1)
+	   {
+	   
+	   }
+
 
 		
 	//	 if()
