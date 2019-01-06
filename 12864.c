@@ -92,3 +92,9 @@ void lcd12864_init()
   delay_ms(5);
 }
 
+void lcd12864_show_char(uchar x,uchar y,uchar ch)
+{
+  	led_pos(x,y);
+	 write_12864dat(ch);
+}
+
