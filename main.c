@@ -27,7 +27,7 @@ uchar mima[6]={0};		  //密码
 uchar mima_edit[6]={0xff,0xff,0xff,0xff,0xff,0xff};	  //用户输入的密码
 
 
-#define FOSC 11059200L      //System frequency
+#define FOSC 12000000L      //System frequency
 #define BAUD 9600           //UART baudrate
 
 /*Define UART parity mode*/
@@ -44,6 +44,7 @@ bit busy;
 void SendData(BYTE dat);
 void SendString(char *s);
 
+void UsartConfiguration();
 
 uchar flag_function=0;
 uchar flag_mimakaisuo=0;
@@ -70,7 +71,7 @@ void main()
 //	lcd12864_show_string(3,1,table4);
 //	lcd12864_show_string(3,5,table5);
 //
-	
+	UsartConfiguration();
 	while(1)
 	{
 		 KeyDown();
@@ -334,6 +335,7 @@ void main()
 		else
 			return 0;
  }
+
 void init()
 {
     lcd12864_init();
@@ -348,76 +350,29 @@ void init()
 	mima[3]=4;
 	mima[4]=5;
 	mima[5]=6;
-#if (PARITYBIT == NONE_PARITY)
-    SCON = 0x50;            //8-bit variable UART
-#elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
-    SCON = 0xda;            //9-bit variable UART, parity bit initial to 1
-#elif (PARITYBIT == SPACE_PARITY)
-    SCON = 0xd2;            //9-bit variable UART, parity bit initial to 0
-#endif
 
-    TMOD = 0x20;            //Set Timer1 as 8-bit auto reload mode
-    TH1 = TL1 = -(FOSC/12/32/BAUD); //Set auto-reload vaule
-    TR1 = 1;                //Timer1 start run
-    ES = 1;                 //Enable UART interrupt
-    EA = 1;                 //Open master interrupt switch
-}
- /*----------------------------
-UART interrupt service routine
-----------------------------*/
-void Uart_Isr() interrupt 4 using 1
-{
-    if (RI)
-    {
-        RI = 0;             //Clear receive interrupt flag
-		ACC=SBUF;
-		SendData(ACC);
-    }
-    if (TI)
-    {
-        TI = 0;             //Clear transmit interrupt flag
-        busy = 0;           //Clear transmit busy flag
-    }
 }
 
-/*----------------------------
-Send a byte data to UART
-Input: dat (data to be sent)
-Output:None
-----------------------------*/
-void SendData(BYTE dat)
+void UsartConfiguration()
 {
-    while (busy);           //Wait for the completion of the previous data is sent
-    ACC = dat;              //Calculate the even parity bit P (PSW.0)
-    if (P)                  //Set the parity bit according to P
-    {
-#if (PARITYBIT == ODD_PARITY)
-        TB8 = 0;            //Set parity bit to 0
-#elif (PARITYBIT == EVEN_PARITY)
-        TB8 = 1;            //Set parity bit to 1
-#endif
-    }
-    else
-    {
-#if (PARITYBIT == ODD_PARITY)
-        TB8 = 1;            //Set parity bit to 1
-#elif (PARITYBIT == EVEN_PARITY)
-        TB8 = 0;            //Set parity bit to 0
-#endif
-    }
-    busy = 1;
-    SBUF = ACC;             //Send data to UART buffer
+
+	SCON=0X50;			//设置为工作方式1
+	TMOD=0X20;			//设置计数器工作方式2
+	PCON=0X00;			//波特率加倍
+	TH1=0XFd;		    //计数器初始值设置，注意波特率是4800的
+	TL1=0XFd;
+	ES=1;						//打开接收中断
+	EA=1;						//打开总中断
+	TR1=1;					    //打开计数器
 }
 
-/*----------------------------
-Send a string to UART
-Input: s (address of string)
-Output:None
-----------------------------*/
-void SendString(char *s)
+void Usart() interrupt 4
 {
-    while (*s)              //Check the end of the string
-    {
-        SendData(*s++);     //Send current char and increment string ptr
-    }
+	unsigned char receiveData;
+	receiveData=SBUF; //出去接收到的数据
+	RI = 0;           //清除接收中断标志位
+	SBUF=receiveData; //将接收到的数据放入到发送寄存器
+	while(!TI);		  //等待发送数据完成
+	TI=0;			  //清除发送完成标志位
 }
+
