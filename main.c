@@ -245,7 +245,7 @@ void main()
 	   
 	   }
 
-	   	//二级菜单 ————蓝牙开锁界面
+	   	//二级菜单 ————设置界面
 	   if(flag_shezhijiemian==1)
 	   {
 	   
