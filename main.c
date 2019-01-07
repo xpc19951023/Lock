@@ -19,13 +19,14 @@ uchar code table00[]="                  ";
 
 uchar  index=0;
 uchar mima[6]={0};		  //密码
-uchar mima_edit[6]={0};	  //用户输入的密码
+uchar mima_edit[6]={0xff,0xff,0xff,0xff,0xff,0xff};	  //用户输入的密码
 
 uchar flag_function=0;
 uchar flag_mimakaisuo=0;
 uchar flag_zhiwenkaisuo=0;
 uchar flag_lanyakaisuo=0;
 uchar flag_shezhijiemian=0;
+uchar checkmima(uchar mima[],uchar mima_edit[]);
 void init();
 
 void main()
@@ -159,8 +160,8 @@ void main()
 				      if(index<6)
 					  {
 					   	   mima_edit[index++]=KeyValue;
-					  lcd12864_show_char(1,index,KeyValue+'0');
-					  KeyValue=17;
+						   lcd12864_show_char(1,index,KeyValue+'0');
+						   KeyValue=17;
 					  }else
 					  {
 					  //已经输入六个数了，无需再输入
@@ -171,13 +172,55 @@ void main()
 				    if(KeyValue==10)
 					{
 					   //删除一位
+					   if(index>0&&index<=6)
+					   {
+						mima_edit[index-1]=0Xff;
+					   lcd12864_show_char(1,index-1,' ');
+					   index-=1;
+					   }else if(index>6)
+					   {   
+					   	index=6;
+					   lcd12864_show_char(1,index-1,' ');
+					   mima_edit[index-1]=0Xff;
+					   index-=1;
+					   }else
+					   {
+					   //index为0，不操作
+					   }
+
 					}else if(KeyValue==11)
 					{
 					 //确认
+					   if(checkmima(mima,mima_edit))
+					   {
+						  //密码正确开锁,提示
+						 
+					   } else
+					   {
+						 //密码错误，提示,并清空密码
+						 uchar i;
+						 for(i=0;i<6;i++)
+						 lcd12864_show_char(1,i,' ');
+					   }
+					   //清除输入的密码
+					   	mima_edit[0]=0xff;
+						mima_edit[1]=0xff;
+						mima_edit[2]=0xff;
+						mima_edit[3]=0xff;
+						mima_edit[4]=0xff;
+						mima_edit[5]=0xff;
 					}
 					else if(KeyValue==12)
 					{
 					  //退出
+					  flag_mimakaisuo=0;
+					   //清除输入的密码
+					    mima_edit[0]=0xff;
+						mima_edit[1]=0xff;
+						mima_edit[2]=0xff;
+						mima_edit[3]=0xff;
+						mima_edit[4]=0xff;
+						mima_edit[5]=0xff;
 					}else
 					{
 					  //此种按键码无效
@@ -231,7 +274,22 @@ void main()
 //		}
 	}
 }
-
+ uchar checkmima(uchar mima[],uchar mima_edit[])
+ {
+  	    uchar i=0,j=0;
+	  	for(i=0;i<6;i++)
+		{
+		   if(mima[i]==mima_edit[i])
+		   {
+				 j++;
+		   }
+		}
+		
+	  	if(j==6)
+		   return 1;
+		else
+			return 0;
+ }
 void init()
 {
     lcd12864_init();
