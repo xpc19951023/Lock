@@ -16,11 +16,14 @@ uchar code table7[]="11确认";
 uchar code table8[]="12退出";
 uchar code table9[]="    开锁成功    ";
 
+
 uchar code table11[]="  请输入密码    ";
 uchar code table21[]="  请输入指纹    ";
-uchar code table31[]="  请连接蓝牙设备";
+uchar code table31[]="  蓝牙开锁中    ";
 uchar code table41[]="    设置界面  ";
 uchar code table00[]="                  ";
+
+
 
 uchar  index=0;
 uchar mima[6]={0};		  //密码
@@ -158,7 +161,7 @@ void main()
 	        lcd12864_show_string(1,0,table00);
 	        lcd12864_show_string(2,0,table00);
             lcd12864_show_string(3,0,table00);
-     
+			lcd12864_show_string(3,5,table8);
 		}	
 
 		  if( KeyValue==4 && flag_function==4 )
@@ -287,7 +290,19 @@ void main()
 	   	//二级菜单 ————蓝牙开锁界面
 	   if(flag_lanyakaisuo==1)
 	   {
-	   
+	     	if(KeyValue==12)
+			{
+				flag_lanyakaisuo=0;
+				KeyValue=17;
+					   flag_lanyakaisuo=0;
+					   lcd12864_show_string(0,1,table1);
+	                   lcd12864_show_string(1,1,table2);
+	                   lcd12864_show_string(2,1,table3);
+                       lcd12864_show_string(3,1,table4);
+                       lcd12864_show_string(3,5,table5);
+
+			}
+
 	   }
 
 	   	//二级菜单 ————设置界面
@@ -295,10 +310,8 @@ void main()
 	   {
 	   
 	   }
+	
 
-
-		
-	//	 if()
 
 
 //		if(key_num==1)
@@ -319,6 +332,9 @@ void main()
 //		}
 	}
 }
+
+
+
  uchar checkmima(uchar mima[],uchar mima_edit[])
  {
   	    uchar i=0,j=0;
@@ -335,6 +351,8 @@ void main()
 		else
 			return 0;
  }
+
+
 
 void init()
 {
@@ -353,13 +371,15 @@ void init()
 
 }
 
+
+
 void UsartConfiguration()
 {
 
 	SCON=0X50;			//设置为工作方式1
 	TMOD=0X20;			//设置计数器工作方式2
 	PCON=0X00;			//波特率加倍
-	TH1=0XFd;		    //计数器初始值设置，注意波特率是4800的
+	TH1=0XFd;		    //计数器初始值设置，注意波特率是9600的
 	TL1=0XFd;
 	ES=1;						//打开接收中断
 	EA=1;						//打开总中断
