@@ -407,7 +407,7 @@ void Usart() interrupt 4
 	   {
 	   
 	   }
-//	RI = 0;           //清除接收中断标志位
+	RI = 0;           //清除接收中断标志位
 //	SBUF=receiveData; //将接收到的数据放入到发送寄存器
 //	while(!TI);		  //等待发送数据完成
 //	TI=0;			  //清除发送完成标志位
