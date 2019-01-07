@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53          {
   54   1         init();//初始化，读取密码
   55   1      //   display_init_lcd();//显示初始界面
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 2   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 2   
 
   56   1      //   /*
   57   1      //     1 密码解锁
@@ -126,7 +126,7 @@ line level    source
  115   4                              lcd12864_show_char(1,0,' ');
  116   4                              lcd12864_show_char(2,0,' ');
  117   4                              lcd12864_show_char(3,0,'*');
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 3   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 3   
 
  118   4                              lcd12864_show_char(3,4,' ');
  119   4      
@@ -190,7 +190,7 @@ line level    source
  177   3                        {              
  178   4                                        if(KeyValue<10)
  179   4                                        {
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 4   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 4   
 
  180   5                                            if(index<6)
  181   5                                                {
@@ -254,7 +254,7 @@ line level    source
  239   6                                                      mima_edit[3]=0xff;
  240   6                                                      mima_edit[4]=0xff;
  241   6                                                      mima_edit[5]=0xff;
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 5   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 5   
 
  242   6                                              }
  243   5      
@@ -318,7 +318,7 @@ line level    source
  301   5                                 lcd12864_show_string(1,1,table00);
  302   5                                 lcd12864_show_string(2,1,table00);
  303   5                             lcd12864_show_string(3,1,table00);
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 6   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 6   
 
  304   5      
  305   5                                       }
@@ -382,7 +382,7 @@ line level    source
  363   1              lcd12864_show_string(0,1,table1);
  364   1              lcd12864_show_string(1,1,table2);
  365   1              lcd12864_show_string(2,1,table3);
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 7   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 7   
 
  366   1              lcd12864_show_string(3,1,table4);
  367   1              lcd12864_show_string(3,5,table5);
@@ -446,7 +446,7 @@ line level    source
  425   3                             if(buff_lanya[i+1]=='K'&&buff_lanya[i+2]=='!')
  426   3                                 {
  427   4                                        return 1;
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 18:54:02 PAGE 8   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:03:24 PAGE 8   
 
  428   4                                 }
  429   3                         }
