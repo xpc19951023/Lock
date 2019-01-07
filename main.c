@@ -39,6 +39,8 @@ uchar flag_success_laya=0;
 
 
 void UsartConfiguration();
+void sendchar(uchar ch);
+void sendstring(uchar *s);
 
 uchar flag_function=0;
 uchar flag_mimakaisuo=0;
@@ -222,6 +224,11 @@ void main()
 	                    lcd12864_show_string(1,0,table00);
 	                    lcd12864_show_string(2,0,table00);
                         lcd12864_show_string(3,0,table00);
+						sendstring("#C!");//成功回复
+						sendstring("#C!");
+						sendstring("#C!");
+						sendstring("#C!");
+						sendstring("#C!");
 						 
 					   } else
 					   {
@@ -230,7 +237,11 @@ void main()
 						 for(i=0;i<6;i++)
 						 lcd12864_show_char(1,i,' ');
 						 index=0;
-						
+						 sendstring("#S!");//失败回复
+						 sendstring("#S!");
+						 sendstring("#S!");
+						 sendstring("#S!");
+						 sendstring("#S!");
 					   }
 					   //清除输入的密码
 					   	mima_edit[0]=0xff;
@@ -413,8 +424,19 @@ void Usart() interrupt 4
 	while(!TI);		  //等待发送数据完成
 	TI=0;			  //清除发送完成标志位
 }
-
-
+void sendchar(uchar ch)
+{
+	SBUF=ch; //将接收到的数据放入到发送寄存器
+	while(!TI);		  //等待发送数据完成
+	TI=0;	
+}
+void sendstring(uchar *s)
+{
+   while (*s)              
+    {
+        sendchar(*s++);     
+    }
+}
 uchar checklanay(uchar buff_lanya[])
 {
 	uchar i=0;
