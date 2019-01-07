@@ -32,7 +32,7 @@ uchar mima_edit[6]={0xff,0xff,0xff,0xff,0xff,0xff};	  //用户输入的密码
 uchar buff_lanya[20];
 uchar num_laya_i=0;
 uchar num_laya_bao=0;
-uchar flag_lanyakaisuo=0;//数据包已经足够，可以判断开锁
+uchar flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
 uchar flag_success_laya=0;
 
 
@@ -66,9 +66,9 @@ void main()
 //
 	UsartConfiguration();
 	while(1)
-	{
+	{	  	uchar i;
 		 KeyDown();
-			
+		
 		 //一级菜单
 		 if(flag_mimakaisuo==0&&flag_zhiwenkaisuo==0&&flag_lanyakaisuo==0&&flag_shezhijiemian==0)
 		 {
@@ -280,8 +280,7 @@ void main()
 	   	//二级菜单 ————蓝牙开锁界面
 	   if(flag_lanyakaisuo==1)
 	   {
-<<<<<<< HEAD
-	   		if(flag_lanyakaisuo)
+	   		if(flag_lanyakaisuo_bao)
 			{
 			 	 if(checklanay(buff_lanya))
 				 {
@@ -291,7 +290,7 @@ void main()
 				 {
 				  //开锁失败
 				 }
-				 uchar i=0;
+				
 				 for(i=0;i<20;i++)
 				 {
 				  buff_lanya[i]=0;
@@ -299,14 +298,13 @@ void main()
 				
 				 num_laya_i=0;
 				 num_laya_bao=0;
-				 flag_lanyakaisuo=0;//数据包已经足够，可以判断开锁
+				 flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
 				 flag_success_laya=0;
 			}
-=======
 	     	if(KeyValue==12)
 			{
-				flag_lanyakaisuo=0;
-				KeyValue=17;
+				       flag_lanyakaisuo=0;
+				       KeyValue=17;
 					   flag_lanyakaisuo=0;
 					   lcd12864_show_string(0,1,table1);
 	                   lcd12864_show_string(1,1,table2);
@@ -316,7 +314,6 @@ void main()
 
 			}
 
->>>>>>> 88f7ff16b9961267024a2db77c4569829625d350
 	   }
 
 	   	//二级菜单 ————设置界面
@@ -324,30 +321,9 @@ void main()
 	   {
 	   
 	   }
-	
-
-
-
-//		if(key_num==1)
-//		{  
-//			mimajiesuo();//密码解锁,可取消
-//		}
-//		if(key_num==2)
-//		{
-//			lanyajiesuo();//蓝牙解锁，可取消
-//		}
-//		if(key_num==3)
-//		{  
-//			zhiwenjiesuo();//指纹解锁，可取消
-//		}
-//		if(key_num==4)
-//		{   
-//			shezhi();	   // 设置，可取消
-//		}
-	}
 }
 
-
+   }
 
  uchar checkmima(uchar mima[],uchar mima_edit[])
  {
@@ -405,13 +381,13 @@ void Usart() interrupt 4
 	uchar receiveData;
 	receiveData=SBUF; //接收到的数据
 		//指纹开锁界面
-	   if(flag_zhiwenkaisuo==1&&flag_lanyakaisuo==0)
+	   if(flag_zhiwenkaisuo==1&&flag_lanyakaisuo_bao==0)
 	   {
-	   	   buff[num_laya_i++]=	receiveData;
+	   	   buff_lanya[num_laya_i++]=	receiveData;
 		   if(receiveData=='#')
 		      	num_laya_bao++; 
 			if(num_laya_bao>2)
-			   flag_lanyakaisuo=1;  
+			   flag_lanyakaisuo_bao=1;  
 	   }
 	   	//蓝牙开锁界面
 	   if(flag_lanyakaisuo==1)
