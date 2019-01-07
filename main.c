@@ -10,10 +10,11 @@ uchar code table5[]="5.确定";
 uchar code table6[]="10.delete";
 uchar code table7[]="11确认";
 uchar code table8[]="12退出";
+uchar code table9[]="    开锁成功    ";
 
-uchar code table11[]="请输入用户密码";
-uchar code table21[]="请输入用户指纹";
-uchar code table31[]="请连接蓝牙设备";
+uchar code table11[]="  请输入密码    ";
+uchar code table21[]="  请输入指纹    ";
+uchar code table31[]="  请连接蓝牙设备";
 uchar code table41[]="    设置界面  ";
 uchar code table00[]="                  ";
 
@@ -50,11 +51,11 @@ void main()
 	while(1)
 	{
 		 KeyDown();
-
+			
 		 //一级菜单
 		 if(flag_mimakaisuo==0&&flag_zhiwenkaisuo==0&&flag_lanyakaisuo==0&&flag_shezhijiemian==0)
 		 {
-		 if(KeyValue==0)
+		 if(KeyValue==0 )
 		 {
 		 	flag_function=1;
 			lcd12864_show_char(0,0,'*');
@@ -160,40 +161,48 @@ void main()
 				      if(index<6)
 					  {
 					   	   mima_edit[index++]=KeyValue;
-						   lcd12864_show_char(1,index,KeyValue+'0');
+						   lcd12864_show_char(1,index-1,KeyValue+'0');
 						   KeyValue=17;
-					  }else
-					  {
-					  //已经输入六个数了，无需再输入
 					  }
 					
 				  }else
 				  {
 				    if(KeyValue==10)
-					{
+					{	 	KeyValue=17;
 					   //删除一位
-					   if(index>0&&index<=6)
+					   if(index>0 && index<=6)
 					   {
 						mima_edit[index-1]=0Xff;
-					   lcd12864_show_char(1,index-1,' ');
-					   index-=1;
-					   }else if(index>6)
+					    lcd12864_show_char(1,index-1,' ');
+					    index-=1;
+					
+					   }
+					   
+					   else if(index>6)
 					   {   
 					   	index=6;
-					   lcd12864_show_char(1,index-1,' ');
-					   mima_edit[index-1]=0Xff;
-					   index-=1;
+					    lcd12864_show_char(1,index-1,' ');
+					    mima_edit[index-1]=0Xff;
+					    index-=1;
+					   
 					   }else
 					   {
 					   //index为0，不操作
 					   }
-
-					}else if(KeyValue==11)
+					   
+					}
+					
+					else if(KeyValue==11)
 					{
 					 //确认
+					  KeyValue=17;
 					   if(checkmima(mima,mima_edit))
 					   {
 						  //密码正确开锁,提示
+	                    lcd12864_show_string(0,0,table9);	             
+	                    lcd12864_show_string(1,0,table00);
+	                    lcd12864_show_string(2,0,table00);
+                        lcd12864_show_string(3,0,table00);
 						 
 					   } else
 					   {
@@ -201,6 +210,8 @@ void main()
 						 uchar i;
 						 for(i=0;i<6;i++)
 						 lcd12864_show_char(1,i,' ');
+						 index=0;
+						
 					   }
 					   //清除输入的密码
 					   	mima_edit[0]=0xff;
@@ -210,10 +221,18 @@ void main()
 						mima_edit[4]=0xff;
 						mima_edit[5]=0xff;
 					}
+
 					else if(KeyValue==12)
 					{
 					  //退出
-					  flag_mimakaisuo=0;
+					   KeyValue=17;
+					   flag_mimakaisuo=0;
+					   lcd12864_show_string(0,1,table1);
+	                   lcd12864_show_string(1,1,table2);
+	                   lcd12864_show_string(2,1,table3);
+                       lcd12864_show_string(3,1,table4);
+                       lcd12864_show_string(3,5,table5);
+
 					   //清除输入的密码
 					    mima_edit[0]=0xff;
 						mima_edit[1]=0xff;
@@ -221,9 +240,11 @@ void main()
 						mima_edit[3]=0xff;
 						mima_edit[4]=0xff;
 						mima_edit[5]=0xff;
+					
 					}else
 					{
 					  //此种按键码无效
+					   KeyValue=17;
 					}
 				  }
 
