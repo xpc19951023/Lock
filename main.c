@@ -153,10 +153,36 @@ void main()
 	   if(flag_mimakaisuo==1)
 	   {
 	      if(KeyValue!=0xff)
-		  {
-			  	 mima_edit[index]=KeyValue;
-				 lcd12864_show_char(2,index*8,KeyValue+'0');
-				 KeyValue=0xff;
+		  {		 if(KeyValue<10)
+				  {
+				      if(index<6)
+					  {
+					   	   mima_edit[index++]=KeyValue;
+					  lcd12864_show_char(2,index*8,KeyValue+'0');
+					  KeyValue=0xff;
+					  }else
+					  {
+					  //已经输入六个数了，无需再输入
+					  }
+					
+				  }else
+				  {
+				    if(KeyValue==10)
+					{
+					   //删除一位
+					}else if(KeyValue==11)
+					{
+					 //确认
+					}
+					else if(KeyValue==12)
+					{
+					  //退出
+					}else
+					{
+					  //此种按键码无效
+					}
+				  }
+			 
 		  }
 		 
 
