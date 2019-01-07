@@ -1,9 +1,9 @@
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN main.OBJ
-COMPILER INVOKED BY: E:\workspace\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   53          
   54          void main()
   55          {
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 2   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 2   
 
   56   1         init();//初始化，读取密码
   57   1      //   display_init_lcd();//显示初始界面
@@ -126,7 +126,7 @@ line level    source
  115   4                              flag_function=4;
  116   4                              lcd12864_show_char(0,0,' ');
  117   4                              lcd12864_show_char(1,0,' ');
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 3   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 3   
 
  118   4                              lcd12864_show_char(2,0,' ');
  119   4                              lcd12864_show_char(3,0,'*');
@@ -190,7 +190,7 @@ line level    source
  177   2                 {
  178   3                    if(KeyValue!=17)
  179   3                        {              
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 4   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 4   
 
  180   4                                        if(KeyValue<10)
  181   4                                        {
@@ -254,7 +254,7 @@ line level    source
  239   6                                                      mima_edit[0]=0xff;
  240   6                                                      mima_edit[1]=0xff;
  241   6                                                      mima_edit[2]=0xff;
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 5   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 5   
 
  242   6                                                      mima_edit[3]=0xff;
  243   6                                                      mima_edit[4]=0xff;
@@ -318,7 +318,7 @@ line level    source
  301   5                                                      sendstring("#C!");
  302   5      
  303   5                                       }
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 6   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 6   
 
  304   4                                       else
  305   4                                       {
@@ -382,7 +382,7 @@ line level    source
  363   1                      if(j==6)
  364   1                         return 1;
  365   1                      else
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 7   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 7   
 
  366   1                              return 0;
  367   1       }
@@ -440,13 +440,13 @@ line level    source
  419   1                 {
  420   2                 
  421   2                 }
- 422   1              RI = 0;           //清除接收中断标志位
- 423   1              SBUF=receiveData; //将接收到的数据放入到发送寄存器
- 424   1              while(!TI);               //等待发送数据完成
- 425   1              TI=0;                     //清除发送完成标志位
+ 422   1      //      RI = 0;           //清除接收中断标志位
+ 423   1      //      SBUF=receiveData; //将接收到的数据放入到发送寄存器
+ 424   1      //      while(!TI);               //等待发送数据完成
+ 425   1      //      TI=0;                     //清除发送完成标志位
  426   1      }
  427          
-C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:14:06 PAGE 8   
+C51 COMPILER V9.01   MAIN                                                                  01/07/2019 19:22:45 PAGE 8   
 
  428          
  429          void sendchar(uchar ch)
@@ -484,7 +484,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1481    ----
+   CODE SIZE        =   1472    ----
    CONSTANT SIZE    =    215    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
