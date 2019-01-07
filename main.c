@@ -20,6 +20,8 @@ uchar code table9[]="    开锁成功    ";
 uchar code table11[]="  请输入密码    ";
 uchar code table21[]="  请输入指纹    ";
 uchar code table31[]="  蓝牙开锁中    ";
+uchar code table32[]="  蓝牙开锁成功  ";
+uchar code table33[]="  蓝牙开锁失败  ";
 uchar code table41[]="    设置界面  ";
 uchar code table00[]="                  ";
 
@@ -285,10 +287,21 @@ void main()
 			 	 if(checklanay(buff_lanya))
 				 {
 				 //开锁成功
+                       lcd12864_show_string(0,1,table32);
+	                   lcd12864_show_string(1,1,table00);
+	                   lcd12864_show_string(2,1,table00);
+                       lcd12864_show_string(3,1,table00);
+                   
+
 				 }
 				 else
 				 {
 				  //开锁失败
+				       lcd12864_show_string(0,1,table33);
+	                   lcd12864_show_string(1,1,table00);
+	                   lcd12864_show_string(2,1,table00);
+                       lcd12864_show_string(3,1,table00);
+
 				 }
 				
 				 for(i=0;i<20;i++)
@@ -380,17 +393,18 @@ void Usart() interrupt 4
 {
 	uchar receiveData;
 	receiveData=SBUF; //接收到的数据
-		//指纹开锁界面
-	   if(flag_zhiwenkaisuo==1&&flag_lanyakaisuo_bao==0)
+		//蓝牙开锁界面
+	
+	   if(flag_lanyakaisuo_bao==0 && flag_lanyakaisuo==1)
 	   {
-	   	   buff_lanya[num_laya_i++]=	receiveData;
+	   	   buff_lanya[num_laya_i++]= receiveData;
 		   if(receiveData=='#')
 		      	num_laya_bao++; 
 			if(num_laya_bao>2)
 			   flag_lanyakaisuo_bao=1;  
 	   }
-	   	//蓝牙开锁界面
-	   if(flag_lanyakaisuo==1)
+	   	//	指纹开锁界面
+	   if(flag_zhiwenkaisuo==1)
 	   {
 	   
 	   }
@@ -399,6 +413,8 @@ void Usart() interrupt 4
 	while(!TI);		  //等待发送数据完成
 	TI=0;			  //清除发送完成标志位
 }
+
+
 uchar checklanay(uchar buff_lanya[])
 {
 	uchar i=0;
