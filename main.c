@@ -287,7 +287,7 @@ void main()
 	   {
 	   		if(flag_lanyakaisuo_bao)
 			{
-			 	 if(checklanay(buff_lanya))
+			 	 if(checklanay(buff_lanya)&&flag_success_laya==0)
 				 {
 				 //开锁成功
                        lcd12864_show_string(0,1,table32);
@@ -299,20 +299,8 @@ void main()
 						sendstring("#C!");
 						sendstring("#C!");
 						sendstring("#C!");
+						flag_success_laya=1;
 
-				 }
-				 else
-				 {
-				  //开锁失败
-				       lcd12864_show_string(0,1,table33);
-	                   lcd12864_show_string(1,1,table00);
-	                   lcd12864_show_string(2,1,table00);
-                       lcd12864_show_string(3,1,table00);
-					     sendstring("#S!");//失败回复
-						 sendstring("#S!");
-						 sendstring("#S!");
-						 sendstring("#S!");
-						 sendstring("#S!");
 				 }
 				
 				 for(i=0;i<20;i++)
@@ -323,10 +311,10 @@ void main()
 				 num_laya_i=0;
 				 num_laya_bao=0;
 				 flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
-				 flag_success_laya=0;
+				 
 			}
 	     	if(KeyValue==12)
-			{
+			{			   flag_success_laya=0;
 				       flag_lanyakaisuo=0;
 				       KeyValue=17;
 					   flag_lanyakaisuo=0;
