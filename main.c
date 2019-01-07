@@ -26,23 +26,12 @@ uchar  index=0;
 uchar mima[6]={0};		  //密码
 uchar mima_edit[6]={0xff,0xff,0xff,0xff,0xff,0xff};	  //用户输入的密码
 
+uchar buff_lanya[20];
+uchar num_laya_i=0;
+uchar num_laya_bao=0;
+uchar flag_lanyakaisuo=0;//数据包已经足够，可以判断开锁
+uchar flag_success_laya=0;
 
-#define FOSC 12000000L      //System frequency
-#define BAUD 9600           //UART baudrate
-
-/*Define UART parity mode*/
-#define NONE_PARITY     0   //None parity
-#define ODD_PARITY      1   //Odd parity
-#define EVEN_PARITY     2   //Even parity
-#define MARK_PARITY     3   //Mark parity
-#define SPACE_PARITY    4   //Space parity
-
-#define PARITYBIT NONE_PARITY   //Testing even parity
-
-bit busy;
-
-void SendData(BYTE dat);
-void SendString(char *s);
 
 void UsartConfiguration();
 
@@ -52,6 +41,7 @@ uchar flag_zhiwenkaisuo=0;
 uchar flag_lanyakaisuo=0;
 uchar flag_shezhijiemian=0;
 uchar checkmima(uchar mima[],uchar mima_edit[]);
+uchar checklanay(uchar buff_lanya[20]);
 void init();
 
 void main()
@@ -287,7 +277,27 @@ void main()
 	   	//二级菜单 ————蓝牙开锁界面
 	   if(flag_lanyakaisuo==1)
 	   {
-	   
+	   		if(flag_lanyakaisuo)
+			{
+			 	 if(checklanay(buff_lanya))
+				 {
+				 //开锁成功
+				 }
+				 else
+				 {
+				  //开锁失败
+				 }
+				 uchar i=0;
+				 for(i=0;i<20;i++)
+				 {
+				  buff_lanya[i]=0;
+				  }
+				
+				 num_laya_i=0;
+				 num_laya_bao=0;
+				 flag_lanyakaisuo=0;//数据包已经足够，可以判断开锁
+				 flag_success_laya=0;
+			}
 	   }
 
 	   	//二级菜单 ————设置界面
@@ -359,7 +369,7 @@ void UsartConfiguration()
 	SCON=0X50;			//设置为工作方式1
 	TMOD=0X20;			//设置计数器工作方式2
 	PCON=0X00;			//波特率加倍
-	TH1=0XFd;		    //计数器初始值设置，注意波特率是4800的
+	TH1=0XFd;		    //计数器初始值设置，注意波特率是9600的
 	TL1=0XFd;
 	ES=1;						//打开接收中断
 	EA=1;						//打开总中断
@@ -368,11 +378,39 @@ void UsartConfiguration()
 
 void Usart() interrupt 4
 {
-	unsigned char receiveData;
-	receiveData=SBUF; //出去接收到的数据
+	uchar receiveData;
+	receiveData=SBUF; //接收到的数据
+		//指纹开锁界面
+	   if(flag_zhiwenkaisuo==1&&flag_lanyakaisuo==0)
+	   {
+	   	   buff[num_laya_i++]=	receiveData;
+		   if(receiveData=='#')
+		      	num_laya_bao++; 
+			if(num_laya_bao>2)
+			   flag_lanyakaisuo=1;  
+	   }
+	   	//蓝牙开锁界面
+	   if(flag_lanyakaisuo==1)
+	   {
+	   
+	   }
 	RI = 0;           //清除接收中断标志位
 	SBUF=receiveData; //将接收到的数据放入到发送寄存器
 	while(!TI);		  //等待发送数据完成
 	TI=0;			  //清除发送完成标志位
 }
-
+uchar checklanay(uchar buff_lanya[])
+{
+	uchar i=0;
+	   for(i=0;i<20-3;i++)
+	   {
+		   if(buff_lanya[i]=='#')
+		   {
+		       if(buff_lanya[i+1]=='K'&&buff_lanya[i+2]=='!')
+			   {
+				  return 1;
+			   }
+		   }
+	   }
+	   return 0;
+}
