@@ -191,12 +191,12 @@
       <GroupNumber>2</GroupNumber>
       <FileNumber>2</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>62</ColumnNumber>
+      <ColumnNumber>39</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>151</TopLine>
-      <CurrentLine>157</CurrentLine>
+      <TopLine>43</TopLine>
+      <CurrentLine>43</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -212,7 +212,7 @@
       <GroupNumber>3</GroupNumber>
       <FileNumber>3</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <Focus>0</Focus>
       <ColumnNumber>15</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -230,8 +230,8 @@
       <Focus>0</Focus>
       <ColumnNumber>8</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>7</TopLine>
-      <CurrentLine>19</CurrentLine>
+      <TopLine>42</TopLine>
+      <CurrentLine>42</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\key.c</PathWithFileName>
       <FilenameWithoutPath>key.c</FilenameWithoutPath>
@@ -267,7 +267,7 @@
   <AlienFiles>
     <PathWithFilename>I:\Users\zyc\Desktop\lock\Lock\12864.H</PathWithFilename>
     <TopLine>1</TopLine>
-    <CurrentLine>1</CurrentLine>
+    <CurrentLine>5</CurrentLine>
     <Constant>0</Constant>
     <WindowPosition>
       <length>0</length>
@@ -1635,15 +1635,15 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>62</ColumnNumber>
-          <TopLine>151</TopLine>
-          <CurrentLine>157</CurrentLine>
+          <ColumnNumber>39</ColumnNumber>
+          <TopLine>43</TopLine>
+          <CurrentLine>43</CurrentLine>
         </Doc>
         <Doc>
           <Name>12864.H</Name>
-          <ColumnNumber>0</ColumnNumber>
+          <ColumnNumber>21</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <CurrentLine>5</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\12864.c</Name>
@@ -1654,8 +1654,8 @@
         <Doc>
           <Name>.\key.c</Name>
           <ColumnNumber>8</ColumnNumber>
-          <TopLine>7</TopLine>
-          <CurrentLine>19</CurrentLine>
+          <TopLine>42</TopLine>
+          <CurrentLine>42</CurrentLine>
         </Doc>
         <Doc>
           <Name>KEY.H</Name>
