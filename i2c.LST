@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   I2C                                                                   01/07/2019 20:30:01 PAGE 1   
+C51 COMPILER V9.01   I2C                                                                   01/07/2019 20:48:40 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE I2C
@@ -62,7 +62,7 @@ line level    source
   53   1      }
   54          /*******************************************************************************
   55          * 函 数 名           : I2cSendByte(uchar num)
-C51 COMPILER V9.01   I2C                                                                   01/07/2019 20:30:01 PAGE 2   
+C51 COMPILER V9.01   I2C                                                                   01/07/2019 20:48:40 PAGE 2   
 
   56          * 函数功能               : 通过I2C发送一个字节。在I2C_SCL时钟信号高电平期间，
   57          *                    * 保持发送信号I2C_SDA保持稳定
@@ -126,19 +126,53 @@ line level    source
  115   2                      I2C_Delay10us();
  116   2                      I2C_SCL = 0;
  117   2                      I2C_Delay10us();
-C51 COMPILER V9.01   I2C                                                                   01/07/2019 20:30:01 PAGE 3   
+C51 COMPILER V9.01   I2C                                                                   01/07/2019 20:48:40 PAGE 3   
 
  118   2              }
  119   1              return dat;             
  120   1      }
+ 121             /*******************************************************************************
+ 122          * 函 数 名         : void At24c02Write(unsigned char addr,unsigned char dat)
+ 123          * 函数功能                 : 往24c02的一个地址写入一个数据
+ 124          * 输    入         : 无
+ 125          * 输    出         : 无
+ 126          *******************************************************************************/
+ 127          
+ 128          void At24c02Write(unsigned char addr,unsigned char dat)
+ 129          {
+ 130   1              I2C_Start();
+ 131   1              I2C_SendByte(0xa0, 1);//发送写器件地址
+ 132   1              I2C_SendByte(addr, 1);//发送要写入内存地址
+ 133   1              I2C_SendByte(dat, 0);   //发送数据
+ 134   1              I2C_Stop();
+ 135   1      }
+ 136          /*******************************************************************************
+ 137          * 函 数 名         : unsigned char At24c02Read(unsigned char addr)
+ 138          * 函数功能                 : 读取24c02的一个地址的一个数据
+ 139          * 输    入         : 无
+ 140          * 输    出         : 无
+ 141          *******************************************************************************/
+ 142          
+ 143          unsigned char At24c02Read(unsigned char addr)
+ 144          {
+ 145   1              unsigned char num;
+ 146   1              I2C_Start();
+ 147   1              I2C_SendByte(0xa0, 1); //发送写器件地址
+ 148   1              I2C_SendByte(addr, 1); //发送要读取的地址
+ 149   1              I2C_Start();
+ 150   1              I2C_SendByte(0xa1, 1); //发送读器件地址
+ 151   1              num=I2C_ReadByte(); //读取数据
+ 152   1              I2C_Stop();
+ 153   1              return num;     
+ 154   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    147    ----
+   CODE SIZE        =    211    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =   ----       1
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

@@ -23,4 +23,6 @@ void I2C_Stop();
 uchar I2C_SendByte(uchar dat, uchar ack);
 uchar I2C_ReadByte();
 
+void At24c02Write(unsigned char addr,unsigned char dat);
+ unsigned char At24c02Read(unsigned char addr);
 #endif
