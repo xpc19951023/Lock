@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   KEY                                                                   01/06/2019 17:25:15 PAGE 1   
+C51 COMPILER V9.01   KEY                                                                   01/07/2019 11:15:05 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE KEY
@@ -8,7 +8,7 @@ COMPILER INVOKED BY: E:\workspace\C51\BIN\C51.EXE key.c BROWSE DEBUG OBJECTEXTEN
 line level    source
 
    1          #include"key.h"
-   2          
+   2           uchar KeyValue=0;
    3          
    4          /*******************************************************************************
    5          * º¯ Êý Ãû         : KeyDown
@@ -62,7 +62,7 @@ line level    source
   53          *******************************************************************************/
   54          
   55          void Delay10ms(unsigned int c)   //Îó²î 0us
-C51 COMPILER V9.01   KEY                                                                   01/06/2019 17:25:15 PAGE 2   
+C51 COMPILER V9.01   KEY                                                                   01/07/2019 11:15:05 PAGE 2   
 
   56          {
   57   1          unsigned char a, b;
@@ -83,7 +83,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       1
+   DATA SIZE        =      1       1
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

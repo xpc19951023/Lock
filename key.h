@@ -4,7 +4,7 @@
 #include<reg52.h>
 
 #define GPIO_KEY P1
-#define uchar unsigned char
+	#define uchar unsigned char
 extern uchar KeyValue;
 //用来存放读取到的键值
 
