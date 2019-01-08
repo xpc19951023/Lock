@@ -1,9 +1,9 @@
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 1   
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 1   
 
 
-C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+C51 COMPILER V9.05, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN main.OBJ
-COMPILER INVOKED BY: E:\workspace\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
 
 line level    source
 
@@ -46,13 +46,13 @@ line level    source
   37          uchar  index=0;
   38          uchar mima[6]={0};                //密码
   39          uchar mima_edit[6]={0xff,0xff,0xff,0xff,0xff,0xff};       //用户输入的密码
-  40          
+  40          uchar mima_set[6]={0};
   41          uchar buff_lanya[20];
   42          uchar num_laya_i=0;
   43          uchar num_laya_bao=0;
   44          uchar flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
   45          uchar flag_success_laya=0;
-  46          
+  46          uchar shezhi_mima=0;
   47          
   48          void delay10ms();
   49          void UsartConfiguration();
@@ -62,7 +62,7 @@ line level    source
   53          uchar flag_function=0;
   54          uchar flag_mimakaisuo=0;
   55          uchar flag_zhiwenkaisuo=0;
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 2   
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 2   
 
   56          uchar flag_lanyakaisuo=0;
   57          uchar flag_shezhijiemian=0;
@@ -126,7 +126,7 @@ line level    source
  115   2                      
  116   2                       //一级菜单
  117   2                       if(flag_mimakaisuo==0&&flag_zhiwenkaisuo==0&&flag_lanyakaisuo==0&&flag_shezhijiemian==0)
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 3   
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 3   
 
  118   2                       {
  119   3                       if(KeyValue==0 )
@@ -190,7 +190,7 @@ line level    source
  177   3                        if( KeyValue==4 && flag_function==2 )
  178   3                       {
  179   4                         
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 4   
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 4   
 
  180   4                          //lcd12864_init();
  181   4                              flag_zhiwenkaisuo=1;
@@ -240,327 +240,407 @@ line level    source
  225   6                                                         mima_edit[index++]=KeyValue;
  226   6                                                         lcd12864_show_char(1,index-1,KeyValue+'0');
  227   6                                                         KeyValue=17;
- 228   6                                                }
- 229   5                                              
- 230   5                                        }else
- 231   4                                        {
- 232   5                                          if(KeyValue==10)
- 233   5                                              {               KeyValue=17;
- 234   6                                                 //删除一位
- 235   6                                                 if(index>0 && index<=6)
- 236   6                                                 {
- 237   7                                                      mima_edit[index-1]=0Xff;
- 238   7                                                  lcd12864_show_char(1,index-1,' ');
- 239   7                                                  index-=1;
- 240   7                                              
- 241   7                                                 }
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 5   
+ 228   6                                                }else
+ 229   5                                                {
+ 230   6      
+ 231   6                                                }
+ 232   5                                              
+ 233   5                                        }else
+ 234   4                                        {
+ 235   5                                          if(KeyValue==10)
+ 236   5                                              {               KeyValue=17;
+ 237   6                                                 //删除一位
+ 238   6                                                 if(index>0 && index<=6)
+ 239   6                                                 {
+ 240   7                                                      mima_edit[index-1]=0Xff;
+ 241   7                                                  lcd12864_show_char(1,index-1,' ');
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 5   
 
- 242   6                                                 
- 243   6                                                 else if(index>6)
- 244   6                                                 {   
- 245   7                                                      index=6;
- 246   7                                                  lcd12864_show_char(1,index-1,' ');
- 247   7                                                  mima_edit[index-1]=0Xff;
- 248   7                                                  index-=1;
- 249   7                                                 
- 250   7                                                 }else
- 251   6                                                 {
- 252   7                                                 //index为0，不操作
- 253   7                                                 }
- 254   6                                                 
- 255   6                                              }
- 256   5                                              
- 257   5                                              else if(KeyValue==11)
- 258   5                                              {
- 259   6                                               //确认
- 260   6                                                KeyValue=17;
- 261   6                                                 if(checkmima(mima,mima_edit))
- 262   6                                                 {
- 263   7                                                        //密码正确开锁,提示
- 264   7                                  lcd12864_show_string(0,0,table9);                
- 265   7                                  lcd12864_show_string(1,0,table00);
- 266   7                                  lcd12864_show_string(2,0,table00);
- 267   7                              lcd12864_show_string(3,0,table00);
- 268   7                                              
- 269   7                                                       
- 270   7                                                 } else
- 271   6                                                 {
- 272   7                                                       //密码错误，提示,并清空密码
- 273   7                                                       uchar i;
- 274   7                                                       for(i=0;i<6;i++)
- 275   7                                                       lcd12864_show_char(1,i,' ');
- 276   7                                                       index=0;
- 277   7                                                       
- 278   7                                                 }
- 279   6                                                 //清除输入的密码
- 280   6                                                      mima_edit[0]=0xff;
- 281   6                                                      mima_edit[1]=0xff;
- 282   6                                                      mima_edit[2]=0xff;
- 283   6                                                      mima_edit[3]=0xff;
- 284   6                                                      mima_edit[4]=0xff;
- 285   6                                                      mima_edit[5]=0xff;
- 286   6                                              }
- 287   5      
- 288   5                                              else if(KeyValue==12)
- 289   5                                              {
- 290   6                                                //退出
- 291   6                                                 KeyValue=17;
- 292   6                                                 flag_mimakaisuo=0;
- 293   6                                                 lcd12864_show_string(0,1,table1);
- 294   6                                 lcd12864_show_string(1,1,table2);
- 295   6                                 lcd12864_show_string(2,1,table3);
- 296   6                             lcd12864_show_string(3,1,table4);
- 297   6                             lcd12864_show_string(3,5,table5);
- 298   6      
- 299   6                                                 //清除输入的密码
- 300   6                                                  mima_edit[0]=0xff;
- 301   6                                                      mima_edit[1]=0xff;
- 302   6                                                      mima_edit[2]=0xff;
- 303   6                                                      mima_edit[3]=0xff;
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 6   
+ 242   7                                                  index-=1;
+ 243   7                                              
+ 244   7                                                 }
+ 245   6                                                 
+ 246   6                                                 else if(index>6)
+ 247   6                                                 {   
+ 248   7                                                      index=6;
+ 249   7                                                  lcd12864_show_char(1,index-1,' ');
+ 250   7                                                  mima_edit[index-1]=0Xff;
+ 251   7                                                  index-=1;
+ 252   7                                                 
+ 253   7                                                 }else
+ 254   6                                                 {
+ 255   7                                                 //index为0，不操作
+ 256   7      
+ 257   7                                                 }
+ 258   6                                                 
+ 259   6                                              }
+ 260   5                                              
+ 261   5                                              else if(KeyValue==11)
+ 262   5                                              {
+ 263   6                                               //确认
+ 264   6                                                KeyValue=17;
+ 265   6                                                 if(checkmima(mima,mima_edit))
+ 266   6                                                 {
+ 267   7                                                        //密码正确开锁,提示
+ 268   7                                  lcd12864_show_string(0,0,table9);                
+ 269   7                                  lcd12864_show_string(1,0,table00);
+ 270   7                                  lcd12864_show_string(2,0,table00);
+ 271   7                              lcd12864_show_string(3,0,table00);
+ 272   7                                                      index=0;
+ 273   7                                                       
+ 274   7                                                 } else
+ 275   6                                                 {
+ 276   7                                                       //密码错误，提示,并清空密码
+ 277   7                                                       uchar i;
+ 278   7                                                       for(i=0;i<6;i++)
+ 279   7                                                       lcd12864_show_char(1,i,' ');
+ 280   7                                                       index=0;
+ 281   7                                                       
+ 282   7                                                 }
+ 283   6                                                 //清除输入的密码
+ 284   6                                                      mima_edit[0]=0xff;
+ 285   6                                                      mima_edit[1]=0xff;
+ 286   6                                                      mima_edit[2]=0xff;
+ 287   6                                                      mima_edit[3]=0xff;
+ 288   6                                                      mima_edit[4]=0xff;
+ 289   6                                                      mima_edit[5]=0xff;
+ 290   6                                              }
+ 291   5      
+ 292   5                                              else if(KeyValue==12)
+ 293   5                                              {
+ 294   6                                                //退出
+ 295   6                                                 KeyValue=17;
+ 296   6                                                 flag_mimakaisuo=0;
+ 297   6                                                 lcd12864_show_string(0,1,table1);
+ 298   6                                 lcd12864_show_string(1,1,table2);
+ 299   6                                 lcd12864_show_string(2,1,table3);
+ 300   6                             lcd12864_show_string(3,1,table4);
+ 301   6                             lcd12864_show_string(3,5,table5);
+ 302   6      
+ 303   6                                                 //清除输入的密码
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 6   
 
- 304   6                                                      mima_edit[4]=0xff;
- 305   6                                                      mima_edit[5]=0xff;
- 306   6                                              
- 307   6                                              }else
- 308   5                                              {
- 309   6                                                //此种按键码无效
- 310   6                                                 KeyValue=17;
- 311   6                                              }
- 312   5                                        }
- 313   4      
- 314   4                               
- 315   4                        }
- 316   3                       
- 317   3      
- 318   3                 }
- 319   2      
- 320   2                      //二级菜单 ————指纹开锁界面
- 321   2                 if(flag_zhiwenkaisuo==1)
- 322   2                 {
- 323   3                 
- 324   3                 }
- 325   2      
- 326   2                      //二级菜单 ————蓝牙开锁界面
- 327   2                 if(flag_lanyakaisuo==1)
- 328   2                 {
- 329   3                              if(flag_lanyakaisuo_bao)
- 330   3                              {
- 331   4                                       if(checklanay(buff_lanya)&&flag_success_laya==0)
- 332   4                                       {
- 333   5                                       //开锁成功
- 334   5                             lcd12864_show_string(0,1,table32);
- 335   5                                 lcd12864_show_string(1,1,table00);
- 336   5                                 lcd12864_show_string(2,1,table00);
- 337   5                             lcd12864_show_string(3,1,table00);
- 338   5                                  sendstring("#C!");//成功回复
- 339   5                                                      sendstring("#C!");
- 340   5                                                      sendstring("#C!");
- 341   5                                                      sendstring("#C!");
- 342   5                                                      sendstring("#C!");
- 343   5                                                      flag_success_laya=1;
- 344   5      
- 345   5                                       }
- 346   4                                      
- 347   4                                       for(i=0;i<20;i++)
- 348   4                                       {
- 349   5                                        buff_lanya[i]=0;
- 350   5                                        }
+ 304   6                                                  mima_edit[0]=0xff;
+ 305   6                                                      mima_edit[1]=0xff;
+ 306   6                                                      mima_edit[2]=0xff;
+ 307   6                                                      mima_edit[3]=0xff;
+ 308   6                                                      mima_edit[4]=0xff;
+ 309   6                                                      mima_edit[5]=0xff;
+ 310   6                                                      index=0;
+ 311   6                                              
+ 312   6                                              }else
+ 313   5                                              {
+ 314   6                                                //此种按键码无效
+ 315   6                                                 KeyValue=17;
+ 316   6                                              }
+ 317   5                                        }
+ 318   4      
+ 319   4                               
+ 320   4                        }
+ 321   3                       
+ 322   3      
+ 323   3                 }
+ 324   2      
+ 325   2                      //二级菜单 ————指纹开锁界面
+ 326   2                 if(flag_zhiwenkaisuo==1)
+ 327   2                 {
+ 328   3                 
+ 329   3                 }
+ 330   2      
+ 331   2                      //二级菜单 ————蓝牙开锁界面
+ 332   2                 if(flag_lanyakaisuo==1)
+ 333   2                 {
+ 334   3                              if(flag_lanyakaisuo_bao)
+ 335   3                              {
+ 336   4                                       if(checklanay(buff_lanya)&&flag_success_laya==0)
+ 337   4                                       {
+ 338   5                                       //开锁成功
+ 339   5                             lcd12864_show_string(0,1,table32);
+ 340   5                                 lcd12864_show_string(1,1,table00);
+ 341   5                                 lcd12864_show_string(2,1,table00);
+ 342   5                             lcd12864_show_string(3,1,table00);
+ 343   5                                  sendstring("#C!");//成功回复
+ 344   5                                                      sendstring("#C!");
+ 345   5                                                      sendstring("#C!");
+ 346   5                                                      sendstring("#C!");
+ 347   5                                                      sendstring("#C!");
+ 348   5                                                      flag_success_laya=1;
+ 349   5      
+ 350   5                                       }
  351   4                                      
- 352   4                                       num_laya_i=0;
- 353   4                                       num_laya_bao=0;
- 354   4                                       flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
- 355   4                                       
- 356   4                              }
- 357   3                      if(KeyValue==12)
- 358   3                              {                          flag_success_laya=0;
- 359   4                                             flag_lanyakaisuo=0;
- 360   4                                             KeyValue=17;
- 361   4                                                 flag_lanyakaisuo=0;
- 362   4                                                 lcd12864_show_string(0,1,table1);
- 363   4                                 lcd12864_show_string(1,1,table2);
- 364   4                                 lcd12864_show_string(2,1,table3);
- 365   4                             lcd12864_show_string(3,1,table4);
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 7   
+ 352   4                                       for(i=0;i<20;i++)
+ 353   4                                       {
+ 354   5                                        buff_lanya[i]=0;
+ 355   5                                        }
+ 356   4                                      
+ 357   4                                       num_laya_i=0;
+ 358   4                                       num_laya_bao=0;
+ 359   4                                       flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
+ 360   4                                       
+ 361   4                              }
+ 362   3                      if(KeyValue==12)
+ 363   3                              {                          flag_success_laya=0;
+ 364   4                                             flag_lanyakaisuo=0;
+ 365   4                                             KeyValue=17;
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 7   
 
- 366   4                             lcd12864_show_string(3,5,table5);
- 367   4      
- 368   4                              }
- 369   3      
- 370   3                 }
- 371   2      
- 372   2                //二级菜单 ————设置界面    
- 373   2                 if(flag_shezhijiemian==1)
- 374   2                 {
- 375   3                 
- 376   3                      if(KeyValue==0)
- 377   3                      {
- 378   4                      //密码设置         请输入密码：     10 删除        11 确认     12 取消
- 379   4                              KeyValue=17;  
- 380   4                              flag_shezhijiemian=0;
- 381   4                          lcd12864_show_string(0,1,table11);
- 382   4                              lcd12864_show_string(1,1,table00);
- 383   4                      lcd12864_show_string(2,1,table6);
- 384   4                      lcd12864_show_string(3,1,table7);
- 385   4                  lcd12864_show_string(3,5,table8);
- 386   4                              }
- 387   3                              if(KeyValue==2)
- 388   3                              {
- 389   4                                              //指纹设置
- 390   4                                                 KeyValue=17;  
- 391   4                                                
+ 366   4                                                 flag_lanyakaisuo=0;
+ 367   4                                                 lcd12864_show_string(0,1,table1);
+ 368   4                                 lcd12864_show_string(1,1,table2);
+ 369   4                                 lcd12864_show_string(2,1,table3);
+ 370   4                             lcd12864_show_string(3,1,table4);
+ 371   4                             lcd12864_show_string(3,5,table5);
+ 372   4      
+ 373   4                              }
+ 374   3      
+ 375   3                 }
+ 376   2      
+ 377   2                //二级菜单 ————设置界面    
+ 378   2                 if(flag_shezhijiemian==1)
+ 379   2                 {
+ 380   3                 
+ 381   3                      if(KeyValue==0&&shezhi_mima==0)
+ 382   3                          {  
+ 383   4                      //密码设置         请输入密码：     10 删除        11 确认     12 取消
+ 384   4                              KeyValue=17;  
+ 385   4                              shezhi_mima=1;
+ 386   4                         //   flag_shezhijiemian=0;
+ 387   4                          lcd12864_show_string(0,1,table11);
+ 388   4                              lcd12864_show_string(1,1,table00);
+ 389   4                      lcd12864_show_string(2,1,table6);
+ 390   4                      lcd12864_show_string(3,1,table7);
+ 391   4                  lcd12864_show_string(3,5,table8);
  392   4                              }
- 393   3                              if(KeyValue==12)
- 394   3                              {
- 395   4                                              //退出
- 396   4                                                 KeyValue=17;
- 397   4                                                 flag_shezhijiemian=0;
- 398   4                                                 lcd12864_show_string(0,1,table1);
- 399   4                                 lcd12864_show_string(1,1,table2);
- 400   4                                 lcd12864_show_string(2,1,table3);
- 401   4                             lcd12864_show_string(3,1,table4);
- 402   4                             lcd12864_show_string(3,5,table5);
- 403   4                              }
- 404   3                 }
- 405   2      }
- 406   1      
- 407   1         }
- 408          
- 409           uchar checkmima(uchar mima[],uchar mima_edit[])
- 410           {
- 411   1                  uchar i=0,j=0;
- 412   1                      for(i=0;i<6;i++)
- 413   1                      {
- 414   2                         if(mima[i]==mima_edit[i])
- 415   2                         {
- 416   3                                       j++;
- 417   3                         }
- 418   2                      }
- 419   1                      
- 420   1                      if(j==6)
- 421   1                         return 1;
- 422   1                      else
- 423   1                              return 0;
- 424   1       }
- 425          
- 426          
- 427          
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 8   
+ 393   3                              if(shezhi_mima==1)
+ 394   3                              {         if(KeyValue<10)
+ 395   4                                        {
+ 396   5                                              KeyValue=17;
+ 397   5                                              if(index<6)
+ 398   5                                                 {
+ 399   6                                                      mima_set[index++]=KeyValue;
+ 400   6                                                  lcd12864_show_char(1,index-1,' ');
+ 401   6                                                 }
+ 402   5                                                 else 
+ 403   5                                                 {  
+ 404   6      
+ 405   6                                                 }
+ 406   5                                        }     else if(KeyValue==10)
+ 407   4                                        {
+ 408   5                                                KeyValue=17;
+ 409   5                                                  if(index>0 && index<=6)
+ 410   5                                                 {
+ 411   6                                                      mima_set[index-1]=0Xff;
+ 412   6                                                  lcd12864_show_char(1,index-1,' ');
+ 413   6                                                  index-=1;
+ 414   6                                              
+ 415   6                                                 }
+ 416   5                                                 
+ 417   5                                                 else if(index>6)
+ 418   5                                                 {   
+ 419   6                                                      index=6;
+ 420   6                                                  lcd12864_show_char(1,index-1,' ');
+ 421   6                                                  mima_edit[index-1]=0Xff;
+ 422   6                                                  index-=1;
+ 423   6                                                 
+ 424   6                                                 }else
+ 425   5                                                 {
+ 426   6                                                 //index为0，不操作
+ 427   6      
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 8   
 
- 428          void init()
- 429          {
- 430   1          lcd12864_init();
- 431   1              lcd12864_show_string(0,1,table1);
- 432   1              lcd12864_show_string(1,1,table2);
- 433   1              lcd12864_show_string(2,1,table3);
- 434   1              lcd12864_show_string(3,1,table4);
- 435   1              lcd12864_show_string(3,5,table5);
- 436   1              mima[0]=0;
- 437   1              mima[1]=0;
- 438   1              mima[2]=0;
- 439   1              mima[3]=0;
- 440   1              mima[4]=0;
- 441   1              mima[5]=0;
- 442   1      
- 443   1      }
- 444          
- 445          
- 446          
- 447          void UsartConfiguration()
- 448          {
- 449   1      
- 450   1              SCON=0X50;                      //设置为工作方式1
- 451   1              TMOD=0X20;                      //设置计数器工作方式2
- 452   1              PCON=0X00;                      //波特率加倍
- 453   1              TH1=0XFd;                   //计数器初始值设置，注意波特率是9600的
- 454   1              TL1=0XFd;
- 455   1              ES=1;                                           //打开接收中断
- 456   1              EA=1;                                           //打开总中断
- 457   1              TR1=1;                                      //打开计数器
- 458   1      }
- 459          
- 460          void Usart() interrupt 4
- 461          {
- 462   1              uchar receiveData;
- 463   1              receiveData=SBUF; //接收到的数据
- 464   1                      //蓝牙开锁界面
- 465   1              
- 466   1                 if(flag_lanyakaisuo_bao==0 && flag_lanyakaisuo==1)
- 467   1                 {
- 468   2                         buff_lanya[num_laya_i++]= receiveData;
- 469   2                         if(receiveData=='#')
- 470   2                              num_laya_bao++; 
- 471   2                              if(num_laya_bao>2)
- 472   2                                 flag_lanyakaisuo_bao=1;  
- 473   2                 }
- 474   1                      //      指纹开锁界面
- 475   1                 if(flag_zhiwenkaisuo==1)
- 476   1                 {
- 477   2                 
- 478   2                 }
- 479   1              RI = 0;           //清除接收中断标志位
- 480   1      //      SBUF=receiveData; //将接收到的数据放入到发送寄存器
- 481   1      //      while(!TI);               //等待发送数据完成
- 482   1      //      TI=0;                     //清除发送完成标志位
- 483   1      }
+ 428   6                                                 }
+ 429   5      
+ 430   5                                        }     else if(KeyValue==11)
+ 431   4                                        {
+ 432   5                                                 KeyValue=17;
+ 433   5                                                  At24c02Write(0x00,mima_set[0]);
+ 434   5                                                      delay10ms();
+ 435   5                                                      At24c02Write(0x01,mima_set[1]);
+ 436   5                                                      delay10ms();
+ 437   5                                                      At24c02Write(0x02,mima_set[2]);
+ 438   5                                                      delay10ms();
+ 439   5                                                      At24c02Write(0x03,mima_set[3]);
+ 440   5                                                      delay10ms();
+ 441   5                                                      At24c02Write(0x04,mima_set[4]);
+ 442   5                                                      delay10ms();
+ 443   5                                                      At24c02Write(0x05,mima_set[5]);
+ 444   5                                                      delay10ms();
+ 445   5                                                      mima[0]=mima_set[0];
+ 446   5                                                      mima[1]=mima_set[1];
+ 447   5                                                      mima[2]=mima_set[2];
+ 448   5                                                      mima[3]=mima_set[3];
+ 449   5                                                      mima[4]=mima_set[4];
+ 450   5                                                      mima[5]=mima_set[5];
+ 451   5      
+ 452   5                                        }     else if(KeyValue==12)
+ 453   4                                        {
+ 454   5                                                      KeyValue=0;
+ 455   5                                                      shezhi_mima=0;
+ 456   5      
+ 457   5                                        }else
+ 458   4                                        {
+ 459   5                                                KeyValue=17;
+ 460   5                                        }
+ 461   4                                        
+ 462   4                              }
+ 463   3                              if(KeyValue==2)
+ 464   3                              {
+ 465   4                                              //指纹设置
+ 466   4                                                 KeyValue=17;  
+ 467   4                                                
+ 468   4                              }
+ 469   3                              if(KeyValue==12)
+ 470   3                              {
+ 471   4                                              //退出
+ 472   4                                                 KeyValue=17;
+ 473   4                                                 flag_shezhijiemian=0;
+ 474   4                                                 lcd12864_show_string(0,1,table1);
+ 475   4                                 lcd12864_show_string(1,1,table2);
+ 476   4                                 lcd12864_show_string(2,1,table3);
+ 477   4                             lcd12864_show_string(3,1,table4);
+ 478   4                             lcd12864_show_string(3,5,table5);
+ 479   4                              }
+ 480   3                 }
+ 481   2      }
+ 482   1      
+ 483   1         }
  484          
- 485          
- 486          void sendchar(uchar ch)
- 487          {
- 488   1              SBUF=ch; //将接收到的数据放入到发送寄存器
- 489   1              while(!TI);               //等待发送数据完成
-C51 COMPILER V9.01   MAIN                                                                  01/08/2019 18:36:01 PAGE 9   
+ 485           uchar checkmima(uchar mima[],uchar mima_edit[])
+ 486           {
+ 487   1                  uchar i=0,j=0;
+ 488   1                      for(i=0;i<6;i++)
+ 489   1                      {
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 9   
 
- 490   1              TI=0;   
- 491   1      }
- 492          
- 493          
- 494          void sendstring(uchar *s)
- 495          {
- 496   1         while (*s)              
- 497   1          {
- 498   2              sendchar(*s++);     
- 499   2          }
- 500   1      }
+ 490   2                         if(mima[i]==mima_edit[i])
+ 491   2                         {
+ 492   3                                       j++;
+ 493   3                         }
+ 494   2                      }
+ 495   1                      
+ 496   1                      if(j==6)
+ 497   1                         return 1;
+ 498   1                      else
+ 499   1                              return 0;
+ 500   1       }
  501          
  502          
- 503          uchar checklanay(uchar buff_lanya[])
- 504          {
- 505   1              uchar i=0;
- 506   1                 for(i=0;i<20-3;i++)
- 507   1                 {
- 508   2                         if(buff_lanya[i]=='#')
- 509   2                         {
- 510   3                             if(buff_lanya[i+1]=='K'&&buff_lanya[i+2]=='!')
- 511   3                                 {
- 512   4                                        return 1;
- 513   4                                 }
- 514   3                         }
- 515   2                 }
- 516   1                 return 0;
- 517   1      }
- 518          
- 519          void delay10ms()                //@11.0592MHz
- 520          {
- 521   1              unsigned char i, j;
- 522   1      
- 523   1              i = 108;
- 524   1              j = 145;
- 525   1              do
- 526   1              {
- 527   2                      while (--j);
- 528   2              } while (--i);
- 529   1      }
- 530          
+ 503          
+ 504          void init()
+ 505          {
+ 506   1          lcd12864_init();
+ 507   1              lcd12864_show_string(0,1,table1);
+ 508   1              lcd12864_show_string(1,1,table2);
+ 509   1              lcd12864_show_string(2,1,table3);
+ 510   1              lcd12864_show_string(3,1,table4);
+ 511   1              lcd12864_show_string(3,5,table5);
+ 512   1              mima[0]=0;
+ 513   1              mima[1]=0;
+ 514   1              mima[2]=0;
+ 515   1              mima[3]=0;
+ 516   1              mima[4]=0;
+ 517   1              mima[5]=0;
+ 518   1      
+ 519   1      }
+ 520          
+ 521          
+ 522          
+ 523          void UsartConfiguration()
+ 524          {
+ 525   1      
+ 526   1              SCON=0X50;                      //设置为工作方式1
+ 527   1              TMOD=0X20;                      //设置计数器工作方式2
+ 528   1              PCON=0X00;                      //波特率加倍
+ 529   1              TH1=0XFd;                   //计数器初始值设置，注意波特率是9600的
+ 530   1              TL1=0XFd;
+ 531   1              ES=1;                                           //打开接收中断
+ 532   1              EA=1;                                           //打开总中断
+ 533   1              TR1=1;                                      //打开计数器
+ 534   1      }
+ 535          
+ 536          void Usart() interrupt 4
+ 537          {
+ 538   1              uchar receiveData;
+ 539   1              receiveData=SBUF; //接收到的数据
+ 540   1                      //蓝牙开锁界面
+ 541   1              
+ 542   1                 if(flag_lanyakaisuo_bao==0 && flag_lanyakaisuo==1)
+ 543   1                 {
+ 544   2                         buff_lanya[num_laya_i++]= receiveData;
+ 545   2                         if(receiveData=='#')
+ 546   2                              num_laya_bao++; 
+ 547   2                              if(num_laya_bao>2)
+ 548   2                                 flag_lanyakaisuo_bao=1;  
+ 549   2                 }
+ 550   1                      //      指纹开锁界面
+ 551   1                 if(flag_zhiwenkaisuo==1)
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 10  
+
+ 552   1                 {
+ 553   2                 
+ 554   2                 }
+ 555   1              RI = 0;           //清除接收中断标志位
+ 556   1      //      SBUF=receiveData; //将接收到的数据放入到发送寄存器
+ 557   1      //      while(!TI);               //等待发送数据完成
+ 558   1      //      TI=0;                     //清除发送完成标志位
+ 559   1      }
+ 560          
+ 561          
+ 562          void sendchar(uchar ch)
+ 563          {
+ 564   1              SBUF=ch; //将接收到的数据放入到发送寄存器
+ 565   1              while(!TI);               //等待发送数据完成
+ 566   1              TI=0;   
+ 567   1      }
+ 568          
+ 569          
+ 570          void sendstring(uchar *s)
+ 571          {
+ 572   1         while (*s)              
+ 573   1          {
+ 574   2              sendchar(*s++);     
+ 575   2          }
+ 576   1      }
+ 577          
+ 578          
+ 579          uchar checklanay(uchar buff_lanya[])
+ 580          {
+ 581   1              uchar i=0;
+ 582   1                 for(i=0;i<20-3;i++)
+ 583   1                 {
+ 584   2                         if(buff_lanya[i]=='#')
+ 585   2                         {
+ 586   3                             if(buff_lanya[i+1]=='K'&&buff_lanya[i+2]=='!')
+ 587   3                                 {
+ 588   4                                        return 1;
+ 589   4                                 }
+ 590   3                         }
+ 591   2                 }
+ 592   1                 return 0;
+ 593   1      }
+ 594          
+ 595          void delay10ms()                //@11.0592MHz
+ 596          {
+ 597   1              unsigned char i, j;
+ 598   1      
+ 599   1              i = 108;
+ 600   1              j = 145;
+ 601   1              do
+ 602   1              {
+ 603   2                      while (--j);
+ 604   2              } while (--i);
+ 605   1      }
+ 606          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1621    ----
+   CODE SIZE        =   1884    ----
    CONSTANT SIZE    =    271    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     42      14
+C51 COMPILER V9.05   MAIN                                                                  01/08/2019 19:15:35 PAGE 11  
+
+   DATA SIZE        =     49      14
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

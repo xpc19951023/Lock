@@ -37,13 +37,13 @@ uchar code table00[]="                  ";
 uchar  index=0;
 uchar mima[6]={0};		  //密码
 uchar mima_edit[6]={0xff,0xff,0xff,0xff,0xff,0xff};	  //用户输入的密码
-
+uchar mima_set[6]={0};
 uchar buff_lanya[20];
 uchar num_laya_i=0;
 uchar num_laya_bao=0;
 uchar flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
 uchar flag_success_laya=0;
-
+uchar shezhi_mima=0;
 
 void delay10ms();
 void UsartConfiguration();
@@ -225,6 +225,9 @@ void main()
 					   	   mima_edit[index++]=KeyValue;
 						   lcd12864_show_char(1,index-1,KeyValue+'0');
 						   KeyValue=17;
+					  }else
+					  {
+
 					  }
 					
 				  }else
@@ -250,6 +253,7 @@ void main()
 					   }else
 					   {
 					   //index为0，不操作
+
 					   }
 					   
 					}
@@ -265,7 +269,7 @@ void main()
 	                    lcd12864_show_string(1,0,table00);
 	                    lcd12864_show_string(2,0,table00);
                         lcd12864_show_string(3,0,table00);
-					
+						index=0;
 						 
 					   } else
 					   {
@@ -303,6 +307,7 @@ void main()
 						mima_edit[3]=0xff;
 						mima_edit[4]=0xff;
 						mima_edit[5]=0xff;
+						index=0;
 					
 					}else
 					{
@@ -373,16 +378,87 @@ void main()
 	   if(flag_shezhijiemian==1)
 	   {
 	   
-	   	if(KeyValue==0)
-		{
+	     	if(KeyValue==0&&shezhi_mima==0)
+		    {  
 		//密码设置	   请输入密码：	    10 删除	   11 确认     12 取消
 			KeyValue=17;  
-			flag_shezhijiemian=0;
+			shezhi_mima=1;
+		   //	flag_shezhijiemian=0;
 		    lcd12864_show_string(0,1,table11);
 			lcd12864_show_string(1,1,table00);
 	        lcd12864_show_string(2,1,table6);
 	        lcd12864_show_string(3,1,table7);
             lcd12864_show_string(3,5,table8);
+			}
+			if(shezhi_mima==1)
+			{	  if(KeyValue<10)
+				  {
+					KeyValue=17;
+					if(index<6)
+					   {
+						mima_set[index++]=KeyValue;
+					    lcd12864_show_char(1,index-1,' ');
+					   }
+					   else 
+					   {  
+
+					   }
+				  }	else if(KeyValue==10)
+				  {
+					  KeyValue=17;
+					    if(index>0 && index<=6)
+					   {
+						mima_set[index-1]=0Xff;
+					    lcd12864_show_char(1,index-1,' ');
+					    index-=1;
+					
+					   }
+					   
+					   else if(index>6)
+					   {   
+					   	index=6;
+					    lcd12864_show_char(1,index-1,' ');
+					    mima_edit[index-1]=0Xff;
+					    index-=1;
+					   
+					   }else
+					   {
+					   //index为0，不操作
+
+					   }
+
+				  }	else if(KeyValue==11)
+				  {
+					   KeyValue=17;
+					    At24c02Write(0x00,mima_set[0]);
+						delay10ms();
+						At24c02Write(0x01,mima_set[1]);
+						delay10ms();
+						At24c02Write(0x02,mima_set[2]);
+						delay10ms();
+						At24c02Write(0x03,mima_set[3]);
+						delay10ms();
+						At24c02Write(0x04,mima_set[4]);
+						delay10ms();
+						At24c02Write(0x05,mima_set[5]);
+						delay10ms();
+						mima[0]=mima_set[0];
+						mima[1]=mima_set[1];
+						mima[2]=mima_set[2];
+						mima[3]=mima_set[3];
+						mima[4]=mima_set[4];
+						mima[5]=mima_set[5];
+
+				  }	else if(KeyValue==12)
+				  {
+						KeyValue=0;
+						shezhi_mima=0;
+
+				  }else
+				  {
+					  KeyValue=17;
+				  }
+				  
 			}
 			if(KeyValue==2)
 			{
