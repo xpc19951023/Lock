@@ -24,7 +24,13 @@ uchar code table31[]="  蓝牙开锁中    ";
 uchar code table32[]="  蓝牙开锁成功  ";
 uchar code table33[]="  蓝牙开锁失败  ";
 uchar code table41[]="    设置界面  ";
+uchar code table42[]="  1.设置密码  ";
+uchar code table43[]="  2.设置指纹  ";
+uchar code table44[]="  2.设置指纹  ";
+uchar code table45[]="  2.设置指纹  ";
 uchar code table00[]="                  ";
+
+
 
 
 
@@ -198,9 +204,10 @@ void main()
 		    //lcd12864_init();
 			flag_shezhijiemian=1;
    	        lcd12864_show_string(0,0,table41);
-	        lcd12864_show_string(1,0,table00);
-	        lcd12864_show_string(2,0,table00);
-            lcd12864_show_string(3,0,table00);
+	        lcd12864_show_string(1,0,table42);
+	        lcd12864_show_string(2,0,table43);
+			lcd12864_show_string(3,0,table00);
+            lcd12864_show_string(3,5,table8);
      
 		}
 		   KeyValue=17;
@@ -362,28 +369,20 @@ void main()
 
 	   }
 
-	   	//二级菜单 ————设置界面
-		/*
-		  1 	密码设置
-		  2	    指纹设置
-		  12	  退出
-		*/
+          //二级菜单 ————设置界面    
 	   if(flag_shezhijiemian==1)
-	   {	if(KeyValue==1)
-			{
-					//密码设置
-					/*
-					  请输入密码：
-
-					  10 删除
-					  11 确认     12 取消
-					*/
-					   KeyValue=17;  
-					   flag_shezhijiemian=0;
-					   lcd12864_show_string(0,1,table11);
-	           		   lcd12864_show_string(1,1,table00);
-	                   lcd12864_show_string(2,1,table00);
-                       lcd12864_show_string(3,1,table00);
+	   {
+	   
+	   	if(KeyValue==0)
+		{
+		//密码设置	   请输入密码：	    10 删除	   11 确认     12 取消
+			KeyValue=17;  
+			flag_shezhijiemian=0;
+		    lcd12864_show_string(0,1,table11);
+			lcd12864_show_string(1,1,table00);
+	        lcd12864_show_string(2,1,table6);
+	        lcd12864_show_string(3,1,table7);
+            lcd12864_show_string(3,5,table8);
 			}
 			if(KeyValue==2)
 			{
