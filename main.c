@@ -72,17 +72,17 @@ void main()
 	delay10ms();
 	UsartConfiguration();
 	//EEPROM测试
-	At24c02Write(0x00,0x03);
-	delay10ms();
-	At24c02Write(0x01,0x04);
-	delay10ms();
-	At24c02Write(0x02,0x05);
-	delay10ms();
-	At24c02Write(0x03,0x06);
-	delay10ms();
-	At24c02Write(0x04,0x07);
-	delay10ms();
-	At24c02Write(0x05,0x08);
+//	At24c02Write(0x00,0x03);
+//	delay10ms();
+//	At24c02Write(0x01,0x04);
+//	delay10ms();
+//	At24c02Write(0x02,0x05);
+//	delay10ms();
+//	At24c02Write(0x03,0x06);
+//	delay10ms();
+//	At24c02Write(0x04,0x07);
+//	delay10ms();
+//	At24c02Write(0x05,0x08);
 	delay10ms();
 	mima[0]=At24c02Read(0x00);
 	delay10ms();
@@ -96,13 +96,13 @@ void main()
 	delay10ms();
 	mima[5]=At24c02Read(0x05);
 
-	lcd12864_show_char(0,0,mima[0]+'0');
-	lcd12864_show_char(0,1,mima[1]+'0');
-	lcd12864_show_char(0,2,mima[2]+'0');
-	lcd12864_show_char(0,3,mima[3]+'0');
-	lcd12864_show_char(0,4,mima[4]+'0');
-	lcd12864_show_char(0,5,mima[5]+'0');
-	while(1);
+//	lcd12864_show_char(0,0,mima[0]+'0');
+//	lcd12864_show_char(0,1,mima[1]+'0');
+//	lcd12864_show_char(0,2,mima[2]+'0');
+//	lcd12864_show_char(0,3,mima[3]+'0');
+//	lcd12864_show_char(0,4,mima[4]+'0');
+//	lcd12864_show_char(0,5,mima[5]+'0');
+//	while(1);
 	while(1)
 	{	  	uchar i;
 		 KeyDown();
@@ -363,9 +363,45 @@ void main()
 	   }
 
 	   	//二级菜单 ————设置界面
+		/*
+		  1 	密码设置
+		  2	    指纹设置
+		  12	  退出
+		*/
 	   if(flag_shezhijiemian==1)
-	   {
-	   
+	   {	if(KeyValue==1)
+			{
+					//密码设置
+					/*
+					  请输入密码：
+
+					  10 删除
+					  11 确认     12 取消
+					*/
+					   KeyValue=17;  
+					   flag_shezhijiemian=0;
+					   lcd12864_show_string(0,1,table11);
+	           		   lcd12864_show_string(1,1,table00);
+	                   lcd12864_show_string(2,1,table00);
+                       lcd12864_show_string(3,1,table00);
+			}
+			if(KeyValue==2)
+			{
+					//指纹设置
+					   KeyValue=17;  
+					  
+			}
+	   		if(KeyValue==12)
+			{
+					//退出
+					   KeyValue=17;
+					   flag_shezhijiemian=0;
+					   lcd12864_show_string(0,1,table1);
+	                   lcd12864_show_string(1,1,table2);
+	                   lcd12864_show_string(2,1,table3);
+                       lcd12864_show_string(3,1,table4);
+                       lcd12864_show_string(3,5,table5);
+			}
 	   }
 }
 
@@ -393,12 +429,11 @@ void main()
 void init()
 {
     lcd12864_init();
-   /*
    	lcd12864_show_string(0,1,table1);
 	lcd12864_show_string(1,1,table2);
 	lcd12864_show_string(2,1,table3);
 	lcd12864_show_string(3,1,table4);
-	lcd12864_show_string(3,5,table5); */
+	lcd12864_show_string(3,5,table5);
 	mima[0]=0;
 	mima[1]=0;
 	mima[2]=0;
