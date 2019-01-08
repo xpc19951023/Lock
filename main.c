@@ -7,12 +7,12 @@ typedef unsigned char BYTE;
 typedef unsigned int WORD;
 
 
-uchar code table1[]="1.密码开锁";
-uchar code table2[]="2.指纹开锁";
-uchar code table3[]="3.蓝牙开锁";
-uchar code table4[]="4.设置";
-uchar code table5[]="5.确定";
-uchar code table6[]="10.delete";
+uchar code table1[]="0.密码开锁";
+uchar code table2[]="1.指纹开锁";
+uchar code table3[]="2.蓝牙开锁";
+uchar code table4[]="3.设置";
+uchar code table5[]="4.确定";
+uchar code table6[]="10.delete   ";
 uchar code table7[]="11确认";
 uchar code table8[]="12退出";
 uchar code table9[]="    开锁成功    ";
@@ -23,11 +23,11 @@ uchar code table21[]="  请输入指纹    ";
 uchar code table31[]="  蓝牙开锁中    ";
 uchar code table32[]="  蓝牙开锁成功  ";
 uchar code table33[]="  蓝牙开锁失败  ";
-uchar code table41[]="    设置界面  ";
-uchar code table42[]="  1.设置密码  ";
-uchar code table43[]="  2.设置指纹  ";
-uchar code table44[]="  2.设置指纹  ";
-uchar code table45[]="  2.设置指纹  ";
+uchar code table41[]="    设置界面    ";
+uchar code table42[]="    0.设置密码   ";
+uchar code table43[]="    1.设置指纹   ";
+
+//uchar code table45[]="  2.设置指纹  ";
 uchar code table00[]="                  ";
 
 
@@ -37,13 +37,13 @@ uchar code table00[]="                  ";
 uchar  index=0;
 uchar mima[6]={0};		  //密码
 uchar mima_edit[6]={0xff,0xff,0xff,0xff,0xff,0xff};	  //用户输入的密码
-
+uchar mima_set[6]={0};
 uchar buff_lanya[20];
 uchar num_laya_i=0;
 uchar num_laya_bao=0;
 uchar flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
 uchar flag_success_laya=0;
-
+uchar shezhi_mima=0;
 
 void delay10ms();
 void UsartConfiguration();
@@ -225,6 +225,9 @@ void main()
 					   	   mima_edit[index++]=KeyValue;
 						   lcd12864_show_char(1,index-1,KeyValue+'0');
 						   KeyValue=17;
+					  }else
+					  {
+
 					  }
 					
 				  }else
@@ -250,6 +253,7 @@ void main()
 					   }else
 					   {
 					   //index为0，不操作
+
 					   }
 					   
 					}
@@ -265,7 +269,7 @@ void main()
 	                    lcd12864_show_string(1,0,table00);
 	                    lcd12864_show_string(2,0,table00);
                         lcd12864_show_string(3,0,table00);
-					
+						index=0;
 						 
 					   } else
 					   {
@@ -303,6 +307,7 @@ void main()
 						mima_edit[3]=0xff;
 						mima_edit[4]=0xff;
 						mima_edit[5]=0xff;
+						index=0;
 					
 					}else
 					{
@@ -373,16 +378,97 @@ void main()
 	   if(flag_shezhijiemian==1)
 	   {
 	   
-	   	if(KeyValue==0)
-		{
+	     	if(KeyValue==0 && shezhi_mima==0)
+		    {  
 		//密码设置	   请输入密码：	    10 删除	   11 确认     12 取消
 			KeyValue=17;  
-			flag_shezhijiemian=0;
+			shezhi_mima=1;
+		   //flag_shezhijiemian=0;
 		    lcd12864_show_string(0,1,table11);
 			lcd12864_show_string(1,1,table00);
 	        lcd12864_show_string(2,1,table6);
 	        lcd12864_show_string(3,1,table7);
             lcd12864_show_string(3,5,table8);
+			}
+			if(shezhi_mima==1)
+			{	  if(KeyValue<10)
+				  {
+					//KeyValue=17;
+					if(index<6)
+					   {
+						mima_set[index++]=KeyValue;
+					    lcd12864_show_char(1,index-1,KeyValue+'0');
+						KeyValue=17;
+					   }
+					   else 
+					   {  
+
+					   }
+				  }
+				  else if(KeyValue==10)
+				  {
+					    KeyValue=17;
+					    if(index>0 && index<=6)
+					   {
+						mima_set[index-1]=0Xff;
+					    lcd12864_show_char(1,index-1,' ');
+					    index-=1;
+					
+					   }
+					   
+					   else if(index>6)
+					   {   
+					   	index=6;
+					    lcd12864_show_char(1,index-1,' ');
+					    mima_edit[index-1]=0Xff;
+					    index-=1;
+					   
+					   }else
+					   {
+					   //index为0，不操作
+					   }
+
+				  }	else if(KeyValue==11)
+				  {
+					    KeyValue=17;
+					    At24c02Write(0x00,mima_set[0]);
+						delay10ms();
+						At24c02Write(0x01,mima_set[1]);
+						delay10ms();
+						At24c02Write(0x02,mima_set[2]);
+						delay10ms();
+						At24c02Write(0x03,mima_set[3]);
+						delay10ms();
+						At24c02Write(0x04,mima_set[4]);
+						delay10ms();
+						At24c02Write(0x05,mima_set[5]);
+						delay10ms();
+						mima[0]=mima_set[0];
+						mima[1]=mima_set[1];
+						mima[2]=mima_set[2];
+						mima[3]=mima_set[3];
+						mima[4]=mima_set[4];
+						mima[5]=mima_set[5];
+
+
+				  }	else if(KeyValue==12)
+				  {
+					   KeyValue=17;
+					   index=0;
+					  // shezhi_mima=0;
+					   flag_shezhijiemian=0;
+					   lcd12864_show_string(1,0,table00);
+					   lcd12864_show_string(0,1,table1);
+	                   lcd12864_show_string(1,1,table2);
+	                   lcd12864_show_string(2,1,table3);
+                       lcd12864_show_string(3,1,table4);
+                       lcd12864_show_string(3,5,table5);
+
+				  }else
+				  {
+					 // KeyValue=17;
+				  }
+				  
 			}
 			if(KeyValue==2)
 			{
@@ -395,6 +481,7 @@ void main()
 					//退出
 					   KeyValue=17;
 					   flag_shezhijiemian=0;
+					   
 					   lcd12864_show_string(0,1,table1);
 	                   lcd12864_show_string(1,1,table2);
 	                   lcd12864_show_string(2,1,table3);
@@ -433,12 +520,12 @@ void init()
 	lcd12864_show_string(2,1,table3);
 	lcd12864_show_string(3,1,table4);
 	lcd12864_show_string(3,5,table5);
-	mima[0]=0;
-	mima[1]=0;
-	mima[2]=0;
-	mima[3]=0;
-	mima[4]=0;
-	mima[5]=0;
+	mima[0]=1;
+	mima[1]=2;
+	mima[2]=3;
+	mima[3]=4;
+	mima[4]=5;
+	mima[5]=6;
 
 }
 

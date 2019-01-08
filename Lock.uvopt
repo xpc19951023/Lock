@@ -130,23 +130,6 @@
         <tIfile></tIfile>
         <pMon></pMon>
       </DebugOpt>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>7</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>KEY.H</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-      </Breakpoint>
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
@@ -210,10 +193,17 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>70</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>460</TopLine>
       <CurrentLine>484</CurrentLine>
+=======
+      <ColumnNumber>18</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>446</TopLine>
+      <CurrentLine>446</CurrentLine>
+>>>>>>> c11d93997752ecaa222867a46de345dae0bd8e22
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -259,16 +249,17 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>21</ColumnNumber>
+      <ColumnNumber>14</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>129</TopLine>
-      <CurrentLine>129</CurrentLine>
+      <TopLine>130</TopLine>
+      <CurrentLine>154</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\i2c.c</PathWithFileName>
       <FilenameWithoutPath>i2c.c</FilenameWithoutPath>
     </File>
   </Group>
 
+<<<<<<< HEAD
   <AlienFiles>
     <PathWithFilename>I:\Users\zyc\Desktop\lock\Lock\I2C.H</PathWithFilename>
     <TopLine>7</TopLine>
@@ -1683,6 +1674,8 @@
     </View>
   </WinLayout>
 
+=======
+>>>>>>> c11d93997752ecaa222867a46de345dae0bd8e22
   <MDIGroups>
     <Orientation>1</Orientation>
     <ActiveMDIGroup>0</ActiveMDIGroup>
@@ -1692,6 +1685,7 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
+<<<<<<< HEAD
           <ColumnNumber>70</ColumnNumber>
           <TopLine>460</TopLine>
           <CurrentLine>484</CurrentLine>
@@ -1731,6 +1725,11 @@
           <ColumnNumber>20</ColumnNumber>
           <TopLine>7</TopLine>
           <CurrentLine>25</CurrentLine>
+=======
+          <ColumnNumber>18</ColumnNumber>
+          <TopLine>446</TopLine>
+          <CurrentLine>446</CurrentLine>
+>>>>>>> c11d93997752ecaa222867a46de345dae0bd8e22
         </Doc>
       </Documents>
     </MDIGroup>
