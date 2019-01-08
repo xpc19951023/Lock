@@ -39,6 +39,7 @@ uchar flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
 uchar flag_success_laya=0;
 
 
+void delay10ms();
 void UsartConfiguration();
 void sendchar(uchar ch);
 void sendstring(uchar *s);
@@ -54,7 +55,7 @@ void init();
 
 void main()
 {
-   init();//初始化，读取密码
+     init();//初始化，读取密码
 //   display_init_lcd();//显示初始界面
 //   /*
 //     1 密码解锁
@@ -68,22 +69,33 @@ void main()
 //	lcd12864_show_string(2,1,table3);
 //	lcd12864_show_string(3,1,table4);
 //	lcd12864_show_string(3,5,table5);
-//
+	delay10ms();
 	UsartConfiguration();
 	//EEPROM测试
-	At24c02Write(0x00,0x00);
-	At24c02Write(0x01,0x01);
-	At24c02Write(0x02,0x02);
-	At24c02Write(0x03,0x03);
-	At24c02Write(0x04,0x04);
-	At24c02Write(0x05,0x05);
-
+	At24c02Write(0x00,0x03);
+	delay10ms();
+	At24c02Write(0x01,0x04);
+	delay10ms();
+	At24c02Write(0x02,0x05);
+	delay10ms();
+	At24c02Write(0x03,0x06);
+	delay10ms();
+	At24c02Write(0x04,0x07);
+	delay10ms();
+	At24c02Write(0x05,0x08);
+	delay10ms();
 	mima[0]=At24c02Read(0x00);
+	delay10ms();
 	mima[1]=At24c02Read(0x01);
+	delay10ms();
 	mima[2]=At24c02Read(0x02);
+	delay10ms();
 	mima[3]=At24c02Read(0x03);
+	delay10ms();
 	mima[4]=At24c02Read(0x04);
+	delay10ms();
 	mima[5]=At24c02Read(0x05);
+
 	lcd12864_show_char(0,0,mima[0]+'0');
 	lcd12864_show_char(0,1,mima[1]+'0');
 	lcd12864_show_char(0,2,mima[2]+'0');
@@ -381,17 +393,18 @@ void main()
 void init()
 {
     lcd12864_init();
+   /*
    	lcd12864_show_string(0,1,table1);
 	lcd12864_show_string(1,1,table2);
 	lcd12864_show_string(2,1,table3);
 	lcd12864_show_string(3,1,table4);
-	lcd12864_show_string(3,5,table5);
-	mima[0]=1;
-	mima[1]=2;
-	mima[2]=3;
-	mima[3]=4;
-	mima[4]=5;
-	mima[5]=6;
+	lcd12864_show_string(3,5,table5); */
+	mima[0]=0;
+	mima[1]=0;
+	mima[2]=0;
+	mima[3]=0;
+	mima[4]=0;
+	mima[5]=0;
 
 }
 
@@ -468,3 +481,16 @@ uchar checklanay(uchar buff_lanya[])
 	   }
 	   return 0;
 }
+
+void delay10ms()		//@11.0592MHz
+{
+	unsigned char i, j;
+
+	i = 108;
+	j = 145;
+	do
+	{
+		while (--j);
+	} while (--i);
+}
+
