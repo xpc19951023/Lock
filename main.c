@@ -2,6 +2,7 @@
 #include "12864.h"
 #include "key.h"
 #include "intrins.h"
+#include "i2c.h"
 typedef unsigned char BYTE;
 typedef unsigned int WORD;
 
@@ -69,6 +70,27 @@ void main()
 //	lcd12864_show_string(3,5,table5);
 //
 	UsartConfiguration();
+	//EEPROM≤‚ ‘
+	At24c02Write(0x00,0x00);
+	At24c02Write(0x01,0x01);
+	At24c02Write(0x02,0x02);
+	At24c02Write(0x03,0x03);
+	At24c02Write(0x04,0x04);
+	At24c02Write(0x05,0x05);
+
+	mima[0]=At24c02Read(0x00);
+	mima[1]=At24c02Read(0x01);
+	mima[2]=At24c02Read(0x02);
+	mima[3]=At24c02Read(0x03);
+	mima[4]=At24c02Read(0x04);
+	mima[5]=At24c02Read(0x05);
+	lcd12864_show_char(0,0,mima[0]+'0');
+	lcd12864_show_char(0,1,mima[1]+'0');
+	lcd12864_show_char(0,2,mima[2]+'0');
+	lcd12864_show_char(0,3,mima[3]+'0');
+	lcd12864_show_char(0,4,mima[4]+'0');
+	lcd12864_show_char(0,5,mima[5]+'0');
+	while(1);
 	while(1)
 	{	  	uchar i;
 		 KeyDown();
