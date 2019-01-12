@@ -31,6 +31,12 @@ uchar code table43[]="    1.设置指纹   ";
 uchar code table00[]="                  ";
 
 
+uchar zhiwen_in[12]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x03,0x01,0x00,0x05};
+uchar zhiwen_product[13]={0xEf,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x04,0x02,0x01,0x00,0x08};
+uchar zhiwen_product2[13]={0xEf,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x04,0x02,0x02,0x00,0x09};
+uchar zhiwen_match[12]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x03,0x03,0x00,0x07};
+uchar zhiwen_get[12]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x03,0x05,0x00,0x09};
+uchar zhiwen_str[15]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x06,0x06,0x01,0x00,0x00,0x00,0x0d};
 
 
 
@@ -42,13 +48,18 @@ uchar buff_lanya[20];
 uchar num_laya_i=0;
 uchar num_laya_bao=0;
 uchar flag_lanyakaisuo_bao=0;//数据包已经足够，可以判断开锁
+uchar flag_zhiwenkaisuo_bao=0;
 uchar flag_success_laya=0;
 uchar shezhi_mima=0;
+uchar num_test=0;
 
 void delay10ms();
 void UsartConfiguration();
 void sendchar(uchar ch);
 void sendstring(uchar *s);
+
+uchar buff_zhiwen[20]={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+uchar num_zhiwen_i=0;
 
 uchar flag_function=0;
 uchar flag_mimakaisuo=0;
@@ -58,37 +69,18 @@ uchar flag_shezhijiemian=0;
 uchar checkmima(uchar mima[],uchar mima_edit[]);
 uchar checklanay(uchar buff_lanya[20]);
 void init();
+void sendstring_zhiwen(uchar *s ,uchar length);
+void Delay100ms();	
+
 
 void main()
 {
      init();//初始化，读取密码
-//   display_init_lcd();//显示初始界面
-//   /*
-//     1 密码解锁
-//	 2 蓝牙解锁
-//	 3 指纹解锁
-//	 4 设置
-//   */
-//   key_num=get_keynum();
-//	lcd12864_show_string(0,1,table1);
-//	lcd12864_show_string(1,1,table2);
-//	lcd12864_show_string(2,1,table3);
-//	lcd12864_show_string(3,1,table4);
-//	lcd12864_show_string(3,5,table5);
+
 	delay10ms();
 	UsartConfiguration();
 	//EEPROM测试
-//	At24c02Write(0x00,0x03);
-//	delay10ms();
-//	At24c02Write(0x01,0x04);
-//	delay10ms();
-//	At24c02Write(0x02,0x05);
-//	delay10ms();
-//	At24c02Write(0x03,0x06);
-//	delay10ms();
-//	At24c02Write(0x04,0x07);
-//	delay10ms();
-//	At24c02Write(0x05,0x08);
+
 	delay10ms();
 	mima[0]=At24c02Read(0x00);
 	delay10ms();
@@ -470,10 +462,72 @@ void main()
 				  }
 				  
 			}
-			if(KeyValue==2)
+			if(KeyValue==1)
 			{
-					//指纹设置
-					   KeyValue=17;  
+			     //指纹设置
+			   KeyValue=17;
+			   lcd12864_show_string(0,0,"请录入指纹  ");
+	           lcd12864_show_string(1,1,table00);
+	           lcd12864_show_string(2,1,table00);
+               lcd12864_show_string(3,1,table00);
+               //lcd12864_show_string(3,5,table5);
+        	   
+	           sendstring_zhiwen(zhiwen_in,12);
+               //UART_SendDat();
+	           Delay100ms();
+	           Delay100ms();
+	           Delay100ms();
+	           if(buff_zhiwen[9]==0x00)
+	           {
+	             num_test=0;
+		         lcd12864_show_string(1,0,"11");
+		         while(1);
+//		  sendstring_zhiwen(zhiwen_product,13);
+//		  Delay100ms();
+//	      Delay100ms();
+//		   if(buff_zhiwen[9]==0x00)
+//		  {
+//		     lcd12864_show_string(0,0,"22");
+//			 sendstring_zhiwen(zhiwen_in,12);
+//			  Delay100ms();
+//	          Delay100ms();
+//			   if(buff_zhiwen[9]==0x00)
+//			  {
+//			  	  sendstring_zhiwen(zhiwen_product2,13);
+//				  Delay100ms();
+//	              Delay100ms();
+//				   if(buff_zhiwen[9]==0x00)
+//				  {
+//				     sendstring_zhiwen(zhiwen_match,12);
+//				     Delay100ms();
+//	                 Delay100ms();
+//					  if(buff_zhiwen[9]==0x00)
+//					 {
+//					 	sendstring_zhiwen(zhiwen_get,12);
+//						 Delay100ms();
+//	                     Delay100ms();
+//						  if(buff_zhiwen[9]==0x00)
+//						 {
+//						   	 sendstring_zhiwen(zhiwen_str,15);
+//						     Delay100ms();
+//	                         Delay100ms();
+//							  if(buff_zhiwen[9]==0x00)
+//							  {
+//							    lcd12864_show_string(0,0,"指纹生成完成");
+//							  }
+//						 }
+//
+//					 }
+//				  }
+//			  }
+		  }	
+		  else{
+	        sendstring_zhiwen(zhiwen_in,12);
+		    num_test=0;
+		    Delay100ms();
+		    Delay100ms();
+			Delay100ms();
+	   }		       
 					  
 			}
 	   		if(KeyValue==12)
@@ -534,22 +588,57 @@ void init()
 void UsartConfiguration()
 {
 
-	SCON=0X50;			//设置为工作方式1
-	TMOD=0X20;			//设置计数器工作方式2
-	PCON=0X00;			//波特率加倍
-	TH1=0XFd;		    //计数器初始值设置，注意波特率是9600的
-	TL1=0XFd;
-	ES=1;						//打开接收中断
-	EA=1;						//打开总中断
-	TR1=1;					    //打开计数器
+//	SCON=0X50;			//设置为工作方式1
+//	TMOD=0X20;			//设置计数器工作方式2
+//	PCON=0X00;			//波特率加倍
+//	TH1=0XFd;		    //计数器初始值设置，注意波特率是9600的
+//	TL1=0XFd;
+//	ES=1;						//打开接收中断
+//	EA=1;						//打开总中断
+//	TR1=1;					    //打开计数器
+
+	PCON &= 0x7F;		//波特率不倍速
+	SCON = 0x50;		//8位数据,可变波特率
+	TMOD &= 0x0F;		//清除定时器1模式位
+	TMOD |= 0x20;		//设定定时器1为8位自动重装方式
+	TL1 = 0xFD;		//设定定时初值
+	TH1 = 0xFD;		//设定定时器重装值
+	ET1 = 0;		//禁止定时器1中断
+	TR1 = 1;		//启动定时器1
+	ES=1;
+	EA=1;
 }
+
+//void Usart() interrupt 4
+//{
+//	uchar receiveData;
+//	receiveData=SBUF; //接收到的数据
+//		//蓝牙开锁界面
+//	
+//	   if(flag_lanyakaisuo_bao==0 && flag_lanyakaisuo==1)
+//	   {
+//	   	   buff_lanya[num_laya_i++]= receiveData;
+//		   if(receiveData=='#')
+//		      	num_laya_bao++; 
+//			if(num_laya_bao>2)
+//			   flag_lanyakaisuo_bao=1;  
+//	   }
+//	   	//	指纹开锁界面
+//	   if(flag_zhiwenkaisuo==1)
+//	   {
+//	   
+//	   }
+//	RI = 0;           //清除接收中断标志位
+////	SBUF=receiveData; //将接收到的数据放入到发送寄存器
+////	while(!TI);		  //等待发送数据完成
+////	TI=0;			  //清除发送完成标志位
+//}
 
 void Usart() interrupt 4
 {
-	uchar receiveData;
-	receiveData=SBUF; //接收到的数据
-		//蓝牙开锁界面
-	
+   	uchar receiveData,receiveData_zhiwen;
+	receiveData=SBUF;
+	//蓝牙开锁界面	 
 	   if(flag_lanyakaisuo_bao==0 && flag_lanyakaisuo==1)
 	   {
 	   	   buff_lanya[num_laya_i++]= receiveData;
@@ -558,17 +647,22 @@ void Usart() interrupt 4
 			if(num_laya_bao>2)
 			   flag_lanyakaisuo_bao=1;  
 	   }
-	   	//	指纹开锁界面
-	   if(flag_zhiwenkaisuo==1)
+	//	指纹开锁界面
+	  if(RI)
 	   {
-	   
+		  	receiveData_zhiwen=SBUF;
+			buff_zhiwen[num_test++]= receiveData_zhiwen;
+		    RI = 0;
+			flag_zhiwenkaisuo_bao=1;
+
 	   }
-	RI = 0;           //清除接收中断标志位
+     
+	RI = 0; 
+//	EA=1;          //清除接收中断标志位
 //	SBUF=receiveData; //将接收到的数据放入到发送寄存器
 //	while(!TI);		  //等待发送数据完成
 //	TI=0;			  //清除发送完成标志位
 }
-
 
 void sendchar(uchar ch)
 {
@@ -586,6 +680,14 @@ void sendstring(uchar *s)
     }
 }
 
+void sendstring_zhiwen(uchar *s ,uchar length)
+{
+   while (length!=0)              
+    {
+        sendchar(*s++);
+		length--;     
+    }
+}
 
 uchar checklanay(uchar buff_lanya[])
 {
@@ -614,4 +716,24 @@ void delay10ms()		//@11.0592MHz
 		while (--j);
 	} while (--i);
 }
+
+
+void Delay100ms()		//@11.0592MHz
+{
+	unsigned char i, j, k;
+
+	_nop_();
+	_nop_();
+	i = 5;
+	j = 52;
+	k = 195;
+	do
+	{
+		do
+		{
+			while (--k);
+		} while (--j);
+	} while (--i);
+}
+
 
