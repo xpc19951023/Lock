@@ -3,6 +3,8 @@
 #include "key.h"
 #include "intrins.h"
 #include "i2c.h"
+#include"uart.h"
+
 typedef unsigned char BYTE;
 typedef unsigned int WORD;
 
@@ -26,18 +28,19 @@ uchar code table33[]="  蓝牙开锁失败  ";
 uchar code table41[]="    设置界面    ";
 uchar code table42[]="    0.设置密码   ";
 uchar code table43[]="    1.设置指纹   ";
+uchar code table51[]="指纹录入成功";
 
 //uchar code table45[]="  2.设置指纹  ";
 uchar code table00[]="                  ";
 
 
-uchar zhiwen_in[12]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x03,0x01,0x00,0x05};
+uchar zhiwen_in[12]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x03,0x01,0x00,0x05};	 //获取指纹图像
 uchar zhiwen_product[13]={0xEf,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x04,0x02,0x01,0x00,0x08};
 uchar zhiwen_product2[13]={0xEf,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x04,0x02,0x02,0x00,0x09};
 uchar zhiwen_match[12]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x03,0x03,0x00,0x07};
 uchar zhiwen_get[12]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x03,0x05,0x00,0x09};
 uchar zhiwen_str[15]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x06,0x06,0x01,0x00,0x00,0x00,0x0d};
-
+uchar zhiwen_search[17]={0xef,0x01,0xff,0xff,0xff,0xff,0x01,0x00,0x08,0x04,0x01,0x00,0x00,0x00,0x13,0x00,0x21};
 
 
 uchar  index=0;
@@ -52,6 +55,8 @@ uchar flag_zhiwenkaisuo_bao=0;
 uchar flag_success_laya=0;
 uchar shezhi_mima=0;
 uchar num_test=0;
+uchar flag_mima_set=0;
+uchar flag_zhiwen_set=0;
 
 void delay10ms();
 void UsartConfiguration();
@@ -317,12 +322,67 @@ void main()
 	   	//二级菜单 ————指纹开锁界面
 	   if(flag_zhiwenkaisuo==1)
 	   {
-	   
+	 	 	 lcd12864_show_string(0,0,"请输入指纹  ");
+	         lcd12864_show_string(1,1,table00);
+	         lcd12864_show_string(2,1,table00);
+             lcd12864_show_string(3,1,table00);
+			 do
+			{
+						//获得指纹图像
+						for(i=0;i<12;i++)
+						{
+						  Uart_Send_Byte(zhiwen_in[i]);
+						}
+						for(i=0;i<12;i++)
+						{
+						  buff_zhiwen[i]=Uart_Receive_Byte();
+						}		
+				//判断接收到的确认码,等于0指纹获取成功
+				if(buff_zhiwen[9]==0)
+				{			
+					  Delay100ms();
+					for(i=0;i<13;i++)//存入buffer1
+					{
+					  Uart_Send_Byte(zhiwen_product[i]);
+					}
+				  	for(i=0;i<12;i++)
+					{
+					  buff_zhiwen[i]=Uart_Receive_Byte();
+					}		
+					for(i=0;i<17;i++)//serach指纹
+					{
+					  Uart_Send_Byte(zhiwen_search[i]);
+					}
+				  	for(i=0;i<16;i++)
+					{
+					  buff_zhiwen[i]=Uart_Receive_Byte();
+					}			
+					  if(buff_zhiwen[9] == 0) //搜索到  
+						{						
+					   lcd12864_show_string(0,1,"指纹开锁成功    ");
+	                   lcd12864_show_string(1,1,table00);
+	                   lcd12864_show_string(2,1,table00);
+                       lcd12864_show_string(3,1,table00);
+						  while(1);				
+					   }
+					   else //没有找到
+						{
+					   lcd12864_show_string(0,1,"请输入指纹      ");
+	                   lcd12864_show_string(1,1,"未找到指纹信息  ");
+	                   lcd12864_show_string(2,1,table00);
+                       lcd12864_show_string(3,1,table00);
+						}
+					}		
+				}while(1);
 	   }
 
 	   	//二级菜单 ————蓝牙开锁界面
 	   if(flag_lanyakaisuo==1)
 	   {
+		   	for(i=0;i<15;i++)
+			{
+			 buff_lanya[i]=Uart_Receive_Byte();
+			}
 	   		if(flag_lanyakaisuo_bao)
 			{
 			 	 if(checklanay(buff_lanya)&&flag_success_laya==0)
@@ -352,7 +412,7 @@ void main()
 				 
 			}
 	     	if(KeyValue==12)
-			{			   flag_success_laya=0;
+			{		   flag_success_laya=0;
 				       flag_lanyakaisuo=0;
 				       KeyValue=17;
 					   flag_lanyakaisuo=0;
@@ -369,21 +429,29 @@ void main()
           //二级菜单 ————设置界面    
 	   if(flag_shezhijiemian==1)
 	   {
-	   
-	     	if(KeyValue==0 && shezhi_mima==0)
-		    {  
-		//密码设置	   请输入密码：	    10 删除	   11 确认     12 取消
-			KeyValue=17;  
-			shezhi_mima=1;
-		   //flag_shezhijiemian=0;
-		    lcd12864_show_string(0,1,table11);
+	   		if(KeyValue==0&&flag_mima_set==0)
+			{
+			 KeyValue=17;
+			 flag_mima_set=1;
+			//密码设置	   请输入密码：	    10 删除	   11 确认     12 取消
+			lcd12864_show_string(0,1,table11);
 			lcd12864_show_string(1,1,table00);
 	        lcd12864_show_string(2,1,table6);
 	        lcd12864_show_string(3,1,table7);
             lcd12864_show_string(3,5,table8);
 			}
-			if(shezhi_mima==1)
-			{	  if(KeyValue<10)
+			if(KeyValue==1&&flag_zhiwen_set==0)
+			{
+			 KeyValue=17;
+			 flag_zhiwen_set=1;
+			 lcd12864_show_string(0,0,"请录入指纹  ");
+	         lcd12864_show_string(1,1,table00);
+	         lcd12864_show_string(2,1,table00);
+             lcd12864_show_string(3,1,table00);
+			}
+			if(flag_mima_set)
+			{
+			   if(KeyValue<10)
 				  {
 					//KeyValue=17;
 					if(index<6)
@@ -448,7 +516,8 @@ void main()
 					   KeyValue=17;
 					   index=0;
 					  // shezhi_mima=0;
-					   flag_shezhijiemian=0;
+					   //flag_shezhijiemian=0;
+					   flag_mima_set=0;
 					   lcd12864_show_string(1,0,table00);
 					   lcd12864_show_string(0,1,table1);
 	                   lcd12864_show_string(1,1,table2);
@@ -460,87 +529,114 @@ void main()
 				  {
 					 // KeyValue=17;
 				  }
-				  
 			}
-			if(KeyValue==1)
+			if(flag_zhiwen_set)
 			{
-			     //指纹设置
-			   KeyValue=17;
-			   lcd12864_show_string(0,0,"请录入指纹  ");
-	           lcd12864_show_string(1,1,table00);
-	           lcd12864_show_string(2,1,table00);
-               lcd12864_show_string(3,1,table00);
-               //lcd12864_show_string(3,5,table5);
-        	   
-	           sendstring_zhiwen(zhiwen_in,12);
-               //UART_SendDat();
-	           Delay100ms();
-	           Delay100ms();
-	           Delay100ms();
-	           if(buff_zhiwen[9]==0x00)
-	           {
-	             num_test=0;
-		         lcd12864_show_string(1,0,"11");
-		         while(1);
-//		  sendstring_zhiwen(zhiwen_product,13);
-//		  Delay100ms();
-//	      Delay100ms();
-//		   if(buff_zhiwen[9]==0x00)
-//		  {
-//		     lcd12864_show_string(0,0,"22");
-//			 sendstring_zhiwen(zhiwen_in,12);
-//			  Delay100ms();
-//	          Delay100ms();
-//			   if(buff_zhiwen[9]==0x00)
-//			  {
-//			  	  sendstring_zhiwen(zhiwen_product2,13);
-//				  Delay100ms();
-//	              Delay100ms();
-//				   if(buff_zhiwen[9]==0x00)
-//				  {
-//				     sendstring_zhiwen(zhiwen_match,12);
-//				     Delay100ms();
-//	                 Delay100ms();
-//					  if(buff_zhiwen[9]==0x00)
-//					 {
-//					 	sendstring_zhiwen(zhiwen_get,12);
-//						 Delay100ms();
-//	                     Delay100ms();
-//						  if(buff_zhiwen[9]==0x00)
-//						 {
-//						   	 sendstring_zhiwen(zhiwen_str,15);
-//						     Delay100ms();
-//	                         Delay100ms();
-//							  if(buff_zhiwen[9]==0x00)
-//							  {
-//							    lcd12864_show_string(0,0,"指纹生成完成");
-//							  }
-//						 }
-//
-//					 }
-//				  }
-//			  }
-		  }	
-		  else{
-	        sendstring_zhiwen(zhiwen_in,12);
-		    num_test=0;
-		    Delay100ms();
-		    Delay100ms();
-			Delay100ms();
-	   }		       
+				
+				do
+				   {
+						//获得指纹图像
+						for(i=0;i<12;i++)
+						{
+						  Uart_Send_Byte(zhiwen_in[i]);
+						}
+						for(i=0;i<12;i++)
+						{
+						  buff_zhiwen[i]=Uart_Receive_Byte();
+						}
+						//判断接收到的确认码,等于0指纹获取成功
+						if(buff_zhiwen[9]==0)
+						 {
+							Delay100ms();
+							for(i=0;i<13;i++)//存入buffer1
+							{
+							  Uart_Send_Byte(zhiwen_product[i]);
+							}
+						  	for(i=0;i<12;i++)
+							{
+							  buff_zhiwen[i]=Uart_Receive_Byte();
+							}
+							Delay100ms();Delay100ms();Delay100ms();Delay100ms();Delay100ms();
+							do
+							{
+							  //获得指纹图像
+							  	for(i=0;i<12;i++)
+									{
+									  Uart_Send_Byte(zhiwen_in[i]);
+									}
+								for(i=0;i<12;i++)
+									{
+									  buff_zhiwen[i]=Uart_Receive_Byte();
+									}
+							//判断接收到的确认码,等于0指纹获取成功
+							if(buff_zhiwen[9]==0)
+							 {
+								Delay100ms();
+								for(i=0;i<13;i++)//存入buffer2
+									{
+									  Uart_Send_Byte(zhiwen_product2[i]);
+									}
+						  		for(i=0;i<12;i++)
+									{
+									  buff_zhiwen[i]=Uart_Receive_Byte();
+									}
+								//转换成特征码
+								for(i=0;i<12;i++)
+									{
+									Uart_Send_Byte(zhiwen_get[i]);
+									}
+								
+			          		for(i=0;i<12;i++)
+								{
+								  buff_zhiwen[i]=Uart_Receive_Byte();
+								} 
+
+							  for(i=0;i<15;i++)//将buffer1放入指纹库0位
+								  {
+									 Uart_Send_Byte(zhiwen_str[i]);
+								  } 
+							               		         
+			          		for(i=0;i<12;i++)
+								{
+								  buff_zhiwen[i]=Uart_Receive_Byte();
+								}
+								//指纹录入成功
+								   lcd12864_show_string(0,1,table00);
+				                   lcd12864_show_string(1,1,table00);
+								   lcd12864_show_string(1,1,table51);
+				                   lcd12864_show_string(2,1,table00);
+			                       lcd12864_show_string(3,1,table00);
+			                       lcd12864_show_string(3,5,table00);
 					  
-			}
-	   		if(KeyValue==12)
-			{
-					//退出
-					   KeyValue=17;
-					   flag_shezhijiemian=0;
-					   
+								Delay100ms();Delay100ms();Delay100ms();Delay100ms();Delay100ms();
+								Delay100ms();Delay100ms();Delay100ms();Delay100ms();Delay100ms();
+						    break;
+						  	}
+						   }while(1);
+			        			break;
+							}
+						}while(1);
+					   flag_zhiwen_set=0; //返回设置界面
+					   lcd12864_show_string(1,0,table00);
 					   lcd12864_show_string(0,1,table1);
 	                   lcd12864_show_string(1,1,table2);
 	                   lcd12864_show_string(2,1,table3);
                        lcd12864_show_string(3,1,table4);
                        lcd12864_show_string(3,5,table5);
+					  
+			}
+	     
+	   		if(KeyValue==12)
+			{
+			   //退出
+			   KeyValue=17;
+			   flag_shezhijiemian=0;
+			   
+			   lcd12864_show_string(0,1,table1);
+	           lcd12864_show_string(1,1,table2);
+	           lcd12864_show_string(2,1,table3);
+	           lcd12864_show_string(3,1,table4);
+	           lcd12864_show_string(3,5,table5);
 			}
 	   }
 }
@@ -587,16 +683,6 @@ void init()
 
 void UsartConfiguration()
 {
-
-//	SCON=0X50;			//设置为工作方式1
-//	TMOD=0X20;			//设置计数器工作方式2
-//	PCON=0X00;			//波特率加倍
-//	TH1=0XFd;		    //计数器初始值设置，注意波特率是9600的
-//	TL1=0XFd;
-//	ES=1;						//打开接收中断
-//	EA=1;						//打开总中断
-//	TR1=1;					    //打开计数器
-
 	PCON &= 0x7F;		//波特率不倍速
 	SCON = 0x50;		//8位数据,可变波特率
 	TMOD &= 0x0F;		//清除定时器1模式位
@@ -605,16 +691,14 @@ void UsartConfiguration()
 	TH1 = 0xFD;		//设定定时器重装值
 	ET1 = 0;		//禁止定时器1中断
 	TR1 = 1;		//启动定时器1
-	ES=1;
 	EA=1;
 }
 
 //void Usart() interrupt 4
 //{
-//	uchar receiveData;
-//	receiveData=SBUF; //接收到的数据
-//		//蓝牙开锁界面
-//	
+//   	uchar receiveData,receiveData_zhiwen;
+//	receiveData=SBUF;
+//	//蓝牙开锁界面	 
 //	   if(flag_lanyakaisuo_bao==0 && flag_lanyakaisuo==1)
 //	   {
 //	   	   buff_lanya[num_laya_i++]= receiveData;
@@ -623,46 +707,22 @@ void UsartConfiguration()
 //			if(num_laya_bao>2)
 //			   flag_lanyakaisuo_bao=1;  
 //	   }
-//	   	//	指纹开锁界面
-//	   if(flag_zhiwenkaisuo==1)
+//	//	指纹开锁界面
+//	  if(RI)
 //	   {
-//	   
+//		  	receiveData_zhiwen=SBUF;
+//			buff_zhiwen[num_test++]= receiveData_zhiwen;
+//		    RI = 0;
+//			flag_zhiwenkaisuo_bao=1;
+//
 //	   }
-//	RI = 0;           //清除接收中断标志位
+//     
+//	RI = 0; 
+////	EA=1;          //清除接收中断标志位
 ////	SBUF=receiveData; //将接收到的数据放入到发送寄存器
 ////	while(!TI);		  //等待发送数据完成
 ////	TI=0;			  //清除发送完成标志位
 //}
-
-void Usart() interrupt 4
-{
-   	uchar receiveData,receiveData_zhiwen;
-	receiveData=SBUF;
-	//蓝牙开锁界面	 
-	   if(flag_lanyakaisuo_bao==0 && flag_lanyakaisuo==1)
-	   {
-	   	   buff_lanya[num_laya_i++]= receiveData;
-		   if(receiveData=='#')
-		      	num_laya_bao++; 
-			if(num_laya_bao>2)
-			   flag_lanyakaisuo_bao=1;  
-	   }
-	//	指纹开锁界面
-	  if(RI)
-	   {
-		  	receiveData_zhiwen=SBUF;
-			buff_zhiwen[num_test++]= receiveData_zhiwen;
-		    RI = 0;
-			flag_zhiwenkaisuo_bao=1;
-
-	   }
-     
-	RI = 0; 
-//	EA=1;          //清除接收中断标志位
-//	SBUF=receiveData; //将接收到的数据放入到发送寄存器
-//	while(!TI);		  //等待发送数据完成
-//	TI=0;			  //清除发送完成标志位
-}
 
 void sendchar(uchar ch)
 {
