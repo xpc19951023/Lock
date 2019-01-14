@@ -28,7 +28,7 @@ uchar code table33[]="  蓝牙开锁失败  ";
 uchar code table41[]="    设置界面    ";
 uchar code table42[]="    0.设置密码   ";
 uchar code table43[]="    1.设置指纹   ";
-uchar code table51[]="指纹录入成功";
+uchar code table51[]="  录入成功";
 
 //uchar code table45[]="  2.设置指纹  ";
 uchar code table00[]="                  ";
@@ -359,7 +359,7 @@ void main()
 					}			
 					  if(buff_zhiwen[9] == 0) //搜索到  
 						{						
-					   lcd12864_show_string(0,1,"指纹开锁成功    ");
+					   lcd12864_show_string(0,0,"指纹开锁成功    ");
 	                   lcd12864_show_string(1,1,table00);
 	                   lcd12864_show_string(2,1,table00);
                        lcd12864_show_string(3,1,table00);
@@ -444,7 +444,7 @@ void main()
 			{
 			 KeyValue=17;
 			 flag_zhiwen_set=1;
-			 lcd12864_show_string(0,0,"请录入指纹  ");
+			 lcd12864_show_string(0,0,"  请录入指纹  ");
 	         lcd12864_show_string(1,1,table00);
 	         lcd12864_show_string(2,1,table00);
              lcd12864_show_string(3,1,table00);
@@ -606,9 +606,9 @@ void main()
 								   lcd12864_show_string(1,1,table51);
 				                   lcd12864_show_string(2,1,table00);
 			                       lcd12864_show_string(3,1,table00);
-			                       lcd12864_show_string(3,5,table00);
-					  
-								Delay100ms();Delay100ms();Delay100ms();Delay100ms();Delay100ms();
+			                       lcd12864_show_string(3,5,table8);
+					  			    KeyValue=17;
+							//	Delay100ms();Delay100ms();Delay100ms();Delay100ms();Delay100ms();
 								Delay100ms();Delay100ms();Delay100ms();Delay100ms();Delay100ms();
 						    break;
 						  	}
@@ -617,12 +617,13 @@ void main()
 							}
 						}while(1);
 					   flag_zhiwen_set=0; //返回设置界面
-					   lcd12864_show_string(1,0,table00);
-					   lcd12864_show_string(0,1,table1);
-	                   lcd12864_show_string(1,1,table2);
-	                   lcd12864_show_string(2,1,table3);
-                       lcd12864_show_string(3,1,table4);
-                       lcd12864_show_string(3,5,table5);
+//					   lcd12864_show_string(1,0,table00);
+//					   lcd12864_show_string(0,1,table1);
+//	                   lcd12864_show_string(1,1,table2);
+//	                   lcd12864_show_string(2,1,table3);
+//                       lcd12864_show_string(3,1,table4);
+//                       lcd12864_show_string(3,5,table5);
+					   KeyValue=17;
 					  
 			}
 	     
